@@ -121,24 +121,6 @@ function getReference(item){
   return refs[0] || null;
 }
 
-function hasRealReference(item){
-  const ref = getReference(item);
-  if(!ref) return false;
-
-  const type = normalize(clean(ref.typ) || key(ref.typ));
-  const title = clean(ref.nadpis);
-  const desc = clean(ref.popis);
-  const price = clean(ref.cena);
-  const date = clean(ref.datum_vlozeni);
-
-  if(type.includes("prodane") || type.includes("prodan")) return true;
-  if(type.includes("pronajate") || type.includes("pronajat")) return true;
-
-  if(title || desc || price || date) return true;
-
-  return false;
-}
-
 function getReferenceType(item){
   const ref = getReference(item);
   if(!ref) return "";
@@ -148,21 +130,38 @@ function getReferenceType(item){
   if(type.includes("pronajate") || type.includes("pronajat")) return "Pronajato";
   if(type.includes("prodane") || type.includes("prodan")) return "Prodáno";
 
-  return "Realizováno";
+  return "";
+}
+
+function hasSoldReference(item){
+  return Boolean(getReferenceType(item));
 }
 
 function getStatus(item){
-  const stavKey = key(item.stav);
+  const stavKey = key(item.stav) || clean(item.stav);
   const stavText = normalize(item.stav);
-  const rezervovano = normalize(item.rezervovano);
+  const reserved = normalize(item.rezervovano);
 
-  if(hasRealReference(item)) return "sold";
+  if(hasSoldReference(item)) return "sold";
 
-  if(stavKey === "40" || stavText.includes("prodan")) return "sold";
-  if(stavKey === "50" || stavText.includes("archiv")) return "sold";
+  if(stavKey === "20" || stavText.includes("aktiv")) return "active";
 
-  if(stavKey === "30" || stavText.includes("rezerv") || rezervovano === "ano" || rezervovano === "1"){
+  if(
+    stavKey === "30" ||
+    stavText.includes("rezerv") ||
+    reserved === "ano" ||
+    reserved === "1"
+  ){
     return "reserved";
+  }
+
+  if(
+    stavKey === "40" ||
+    stavKey === "50" ||
+    stavText.includes("prodan") ||
+    stavText.includes("archiv")
+  ){
+    return "sold";
   }
 
   return "active";
@@ -171,7 +170,7 @@ function getStatus(item){
 function getTitle(item){
   const ref = getReference(item);
 
-  if(hasRealReference(item) && clean(ref?.nadpis)){
+  if(hasSoldReference(item) && clean(ref?.nadpis)){
     return clean(ref.nadpis);
   }
 
@@ -181,7 +180,7 @@ function getTitle(item){
 function getDescription(item){
   const ref = getReference(item);
 
-  if(hasRealReference(item) && clean(ref?.popis)){
+  if(hasSoldReference(item) && clean(ref?.popis)){
     return clean(ref.popis);
   }
 
@@ -235,7 +234,7 @@ function getParameters(item){
       pocetGarazi: clean(item.garage_count),
       zastavba: codebook(item.surroundings_type),
       rokKolaudace: clean(item.acceptance_year),
-      datumNasťehovani: formatDate(item.ready_date),
+      datumNastehovani: formatDate(item.ready_date),
       podlazi: clean(item.floor_number),
       pocetPodlazi: clean(item.floors),
       vybaveno: codebook(item.furnished),
@@ -250,7 +249,7 @@ function getParameters(item){
       kategorie: codebook(item.typ_nemovitosti),
       dispozice: codebook(item.flat_kind || item.advert_room_count),
       vlastnictvi: codebook(item.ownership),
-      stavBytu: codebook(item.flat_class || item.building_condition),
+      stav: codebook(item.flat_class || item.building_condition),
       odpad: codebook(item.gully),
       plyn: codebook(item.gas),
       voda: codebook(item.water),
@@ -272,6 +271,7 @@ function mapXmlProperty(item){
   const c = item.cena || {};
   const status = getStatus(item);
   const gallery = getPhotos(item);
+  const referenceType = getReferenceType(item);
 
   return {
     id: clean(item.id_nabidka || item.cislo_nabidky),
@@ -291,7 +291,7 @@ function mapXmlProperty(item){
     region: clean(a.kraj_nazev),
 
     estateType: codebook(item.typ_nemovitosti),
-    type: status === "sold" ? getReferenceType(item) : codebook(item.typ_nabidky),
+    type: status === "sold" ? referenceType || "Realizováno" : codebook(item.typ_nabidky),
 
     usableArea: formatArea(item.usable_area || item.floor_area || item.total_area),
     plotArea: formatArea(item.plot_area),
@@ -304,7 +304,8 @@ function mapXmlProperty(item){
     readyDate: formatDate(item.ready_date),
 
     statusText: codebook(item.stav) || status,
-    referenceType: getReferenceType(item),
+    statusKey: key(item.stav) || clean(item.stav),
+    referenceType,
 
     parameters: getParameters(item),
 
@@ -345,11 +346,17 @@ function filterByStatus(items, status){
   }
 
   if(status === "prodano"){
-    return items.filter(item => normalize(item.type).includes("prodano"));
+    return items.filter(item =>
+      item.status === "sold" &&
+      normalize(item.type).includes("prodano")
+    );
   }
 
   if(status === "pronajato"){
-    return items.filter(item => normalize(item.type).includes("pronajato"));
+    return items.filter(item =>
+      item.status === "sold" &&
+      normalize(item.type).includes("pronajato")
+    );
   }
 
   return items;
