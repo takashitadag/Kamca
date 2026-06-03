@@ -15,6 +15,7 @@ function clean(value){
     if(value["#text"] !== undefined) return String(value["#text"]).trim();
     if(value.text !== undefined) return String(value.text).trim();
     if(value._text !== undefined) return String(value._text).trim();
+    if(value.value !== undefined) return String(value.value).trim();
   }
 
   return String(value).trim();
@@ -22,7 +23,14 @@ function clean(value){
 
 function key(value){
   if(!value || typeof value !== "object") return "";
-  return clean(value.klic || value.key || value.id || value.value || value["@_klic"]);
+
+  return clean(
+    value["@_klic"] ||
+    value.klic ||
+    value.key ||
+    value.id ||
+    value.value
+  );
 }
 
 function normalize(value){
@@ -38,17 +46,22 @@ function codebook(value){
 
 function boolText(value){
   const v = normalize(value);
-  if(v === "ano" || v === "1") return "Ano";
-  if(v === "ne" || v === "0") return "Ne";
+
+  if(v === "ano" || v === "1" || v === "true") return "Ano";
+  if(v === "ne" || v === "0" || v === "false") return "Ne";
+
   return clean(value);
 }
 
 function formatDate(value){
   const v = clean(value);
   if(!v) return "";
+
   const d = v.split(" ")[0];
   const parts = d.split("-");
+
   if(parts.length !== 3) return v;
+
   return `${parts[2]}.${parts[1]}.${parts[0]}`;
 }
 
@@ -57,12 +70,14 @@ function formatArea(value){
   if(!v) return "—";
 
   const n = Number(v.replace(",", "."));
+
   if(Number.isNaN(n)) return v;
 
   return `${n.toLocaleString("cs-CZ")} m²`;
 }
 
 function formatUnit(unit){
+  const raw = clean(unit);
   const v = normalize(unit);
 
   if(v === "nemovitost") return "nemovitost";
@@ -72,7 +87,7 @@ function formatUnit(unit){
   if(v === "m2/mesic") return "m² / měsíc";
   if(v === "m2/rok") return "m² / rok";
 
-  return clean(unit);
+  return raw;
 }
 
 function formatPrice(cena){
@@ -86,6 +101,7 @@ function formatPrice(cena){
   if(!amount) return "Cena u makléře";
 
   const n = Number(amount.replace(",", "."));
+
   const price = Number.isNaN(n)
     ? amount
     : n.toLocaleString("cs-CZ", { maximumFractionDigits: 0 });
@@ -97,7 +113,13 @@ function getPhotos(item){
   return toArray(item?.fotky?.fotka)
     .map(photo => {
       if(typeof photo === "string") return clean(photo);
-      return clean(photo.url || photo.URL || photo.href);
+
+      return clean(
+        photo.url ||
+        photo.URL ||
+        photo.href ||
+        photo["#text"]
+      );
     })
     .filter(Boolean);
 }
@@ -106,11 +128,19 @@ function getMainPhoto(item){
   const photos = toArray(item?.fotky?.fotka);
 
   const main = photos.find(photo => {
-    return normalize(photo?.hlavni) === "ano" || clean(photo?.hlavni) === "1";
+    return (
+      normalize(photo?.hlavni) === "ano" ||
+      clean(photo?.hlavni) === "1"
+    );
   });
 
   if(main){
-    return clean(main.url || main.URL || main.href);
+    return clean(
+      main.url ||
+      main.URL ||
+      main.href ||
+      main["#text"]
+    );
   }
 
   return getPhotos(item)[0] || FALLBACK_IMAGE;
@@ -125,7 +155,8 @@ function getReferenceType(item){
   const ref = getReference(item);
   if(!ref) return "";
 
-  const type = normalize(clean(ref.typ) || key(ref.typ));
+  const typeRaw = clean(ref.typ) || key(ref.typ);
+  const type = normalize(typeRaw);
 
   if(type.includes("pronajate") || type.includes("pronajat")) return "Pronajato";
   if(type.includes("prodane") || type.includes("prodan")) return "Prodáno";
@@ -134,17 +165,37 @@ function getReferenceType(item){
 }
 
 function hasSoldReference(item){
-  return Boolean(getReferenceType(item));
+  const ref = getReference(item);
+  if(!ref) return false;
+
+  const referenceType = getReferenceType(item);
+
+  if(referenceType) return true;
+
+  return Boolean(
+    clean(ref.nadpis) ||
+    clean(ref.popis) ||
+    clean(ref.cena) ||
+    clean(ref.datum_vlozeni)
+  );
 }
 
 function getStatus(item){
-  const stavKey = key(item.stav) || clean(item.stav);
+  const stavKey = key(item.stav);
   const stavText = normalize(item.stav);
   const reserved = normalize(item.rezervovano);
 
   if(hasSoldReference(item)) return "sold";
 
-  if(stavKey === "20" || stavText.includes("aktiv")) return "active";
+  if(
+    stavKey === "40" ||
+    stavKey === "50" ||
+    stavText.includes("prodana") ||
+    stavText.includes("prodano") ||
+    stavText.includes("archiv")
+  ){
+    return "sold";
+  }
 
   if(
     stavKey === "30" ||
@@ -156,12 +207,11 @@ function getStatus(item){
   }
 
   if(
-    stavKey === "40" ||
-    stavKey === "50" ||
-    stavText.includes("prodan") ||
-    stavText.includes("archiv")
+    stavKey === "20" ||
+    stavText.includes("aktiv") ||
+    !stavKey && !stavText
   ){
-    return "sold";
+    return "active";
   }
 
   return "active";
@@ -174,7 +224,11 @@ function getTitle(item){
     return clean(ref.nadpis);
   }
 
-  return clean(item.nadpis_nemovitosti || item.nadpis || "Nemovitost v nabídce");
+  return clean(
+    item.nadpis_nemovitosti ||
+    item.nadpis ||
+    "Nemovitost v nabídce"
+  );
 }
 
 function getDescription(item){
@@ -184,7 +238,11 @@ function getDescription(item){
     return clean(ref.popis);
   }
 
-  return clean(item.popis_nemovitosti || item.popis || "Detailní informace budou doplněny.");
+  return clean(
+    item.popis_nemovitosti ||
+    item.popis ||
+    "Detailní informace budou doplněny."
+  );
 }
 
 function getReferencePrice(item){
@@ -195,6 +253,7 @@ function getReferencePrice(item){
 
   if(price){
     const n = Number(price);
+
     if(!Number.isNaN(n) && n > 0){
       return n.toLocaleString("cs-CZ") + " Kč";
     }
@@ -269,6 +328,7 @@ function getParameters(item){
 function mapXmlProperty(item){
   const a = item.adresa || {};
   const c = item.cena || {};
+
   const status = getStatus(item);
   const gallery = getPhotos(item);
   const referenceType = getReferenceType(item);
@@ -291,7 +351,9 @@ function mapXmlProperty(item){
     region: clean(a.kraj_nazev),
 
     estateType: codebook(item.typ_nemovitosti),
-    type: status === "sold" ? referenceType || "Realizováno" : codebook(item.typ_nabidky),
+    type: status === "sold"
+      ? referenceType || "Realizováno"
+      : codebook(item.typ_nabidky),
 
     usableArea: formatArea(item.usable_area || item.floor_area || item.total_area),
     plotArea: formatArea(item.plot_area),
@@ -304,7 +366,7 @@ function mapXmlProperty(item){
     readyDate: formatDate(item.ready_date),
 
     statusText: codebook(item.stav) || status,
-    statusKey: key(item.stav) || clean(item.stav),
+    statusKey: key(item.stav),
     referenceType,
 
     parameters: getParameters(item),
@@ -326,6 +388,7 @@ function sortProperties(items){
   return items.sort((a,b) => {
     const da = Date.parse(a.updated || a.created || "") || 0;
     const db = Date.parse(b.updated || b.created || "") || 0;
+
     return db - da;
   });
 }
@@ -372,10 +435,7 @@ export default async function handler(req, res){
 
   try{
     if(!FEED_URL){
-      return res.status(500).json({
-        error: true,
-        message: "Chybí POSKI_XML_URL ve Vercelu."
-      });
+      return res.status(200).json([]);
     }
 
     const response = await fetch(FEED_URL, {
@@ -392,7 +452,8 @@ export default async function handler(req, res){
 
     const parser = new XMLParser({
       ignoreAttributes: false,
-      attributeNamePrefix: "",
+      attributeNamePrefix: "@_",
+      textNodeName: "#text",
       trimValues: true,
       parseAttributeValue: false,
       parseTagValue: false
@@ -403,12 +464,7 @@ export default async function handler(req, res){
     const errors = toArray(data?.export?.chyba);
 
     if(errors.length){
-      return res.status(500).json({
-        error: true,
-        source: "poski",
-        message: "Poski export vrátil chybu.",
-        details: errors.map(clean)
-      });
+      return res.status(200).json([]);
     }
 
     let properties = toArray(data?.export?.nabidky?.nabidka)
@@ -433,10 +489,6 @@ export default async function handler(req, res){
     return res.status(200).json(filterByStatus(properties, status));
 
   }catch(error){
-    return res.status(500).json({
-      error: true,
-      message: "XML feed se nepodařilo načíst.",
-      detail: error.message
-    });
+    return res.status(200).json([]);
   }
 }
