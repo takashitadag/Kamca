@@ -1,6 +1,7 @@
 import { XMLParser } from "fast-xml-parser";
 
-const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop";
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop";
 
 function toArray(value){
   if(!value) return [];
@@ -23,12 +24,10 @@ function clean(value){
 
 function key(value){
   if(value === undefined || value === null) return "";
-  if(typeof value === "object") return clean(value.klic || value.key || value.id || value.value || value["@_klic"]);
+  if(typeof value === "object"){
+    return clean(value.klic || value.key || value.id || value.value || value["@_klic"]);
+  }
   return "";
-}
-
-function getCodebookValue(value){
-  return clean(value);
 }
 
 function normalize(value){
@@ -36,6 +35,40 @@ function normalize(value){
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "");
+}
+
+function getCodebookValue(value){
+  if(value === undefined || value === null) return "";
+
+  if(typeof value === "object"){
+    if(value["#text"] !== undefined) return clean(value["#text"]);
+    if(value.text !== undefined) return clean(value.text);
+    if(value._text !== undefined) return clean(value._text);
+  }
+
+  return clean(value);
+}
+
+function buildFeedUrl(url){
+  const finalUrl = new URL(url);
+
+  if(!finalUrl.searchParams.has("limit")){
+    finalUrl.searchParams.set("limit", "999");
+  }
+
+  if(!finalUrl.searchParams.has("offset")){
+    finalUrl.searchParams.set("offset", "0");
+  }
+
+  if(!finalUrl.searchParams.has("orderby")){
+    finalUrl.searchParams.set("orderby", "new");
+  }
+
+  if(!finalUrl.searchParams.has("sort")){
+    finalUrl.searchParams.set("sort", "DESC");
+  }
+
+  return finalUrl.toString();
 }
 
 function getPhotos(item){
@@ -56,14 +89,16 @@ function getMainPhoto(item){
     return normalize(photo?.hlavni) === "ano" || clean(photo?.hlavni) === "1";
   });
 
-  if(main) return clean(main.url || main.URL || main.href || main);
+  if(main){
+    return clean(main.url || main.URL || main.href || main);
+  }
 
   const allPhotos = getPhotos(item);
   return allPhotos[0] || "";
 }
 
 function formatUnit(unit){
-  const value = clean(unit);
+  const value = getCodebookValue(unit);
   if(!value) return "";
 
   const normalized = normalize(value);
@@ -93,8 +128,7 @@ function formatPrice(cena){
     ? amount
     : number.toLocaleString("cs-CZ", { maximumFractionDigits: 0 });
 
-  const suffix = unit ? ` / ${unit}` : "";
-  return `${formatted} Kč${suffix}`;
+  return unit ? `${formatted} Kč / ${unit}` : `${formatted} Kč`;
 }
 
 function formatArea(value){
@@ -107,11 +141,26 @@ function formatArea(value){
   return `${number.toLocaleString("cs-CZ")} m²`;
 }
 
-function getNested(value, path){
-  return path.split(".").reduce((acc, keyName) => {
-    if(acc === undefined || acc === null) return undefined;
-    return acc[keyName];
-  }, value);
+function formatDate(value){
+  const v = clean(value);
+  if(!v) return "";
+
+  const date = v.split(" ")[0];
+  const parts = date.split("-");
+
+  if(parts.length !== 3) return v;
+
+  return `${parts[2]}.${parts[1]}.${parts[0]}`;
+}
+
+function boolText(value){
+  const normalized = normalize(value);
+
+  if(!normalized) return "";
+  if(normalized === "ano" || normalized === "1") return "Ano";
+  if(normalized === "ne" || normalized === "0") return "Ne";
+
+  return clean(value);
 }
 
 function getReference(item){
@@ -141,41 +190,49 @@ function hasMeaningfulReference(item){
 }
 
 function getReferenceType(item){
-  const reference = getReference(item) || {};
-  const type = normalize(clean(reference.typ || reference.type) || key(reference.typ || reference.type));
+  if(!hasMeaningfulReference(item)) return "";
 
-  if(type.includes("pronajat") || type.includes("pronajate")) return "Pronajato";
-  if(type.includes("prodan") || type.includes("prodane")) return "Prodáno";
+  const reference = getReference(item) || {};
+  const rawType = clean(reference.typ || reference.type);
+  const rawKey = key(reference.typ || reference.type);
+  const type = normalize(rawType || rawKey);
+
+  if(type.includes("pronajat") || type.includes("pronajate")){
+    return "Pronajato";
+  }
+
+  if(type.includes("prodan") || type.includes("prodane")){
+    return "Prodáno";
+  }
 
   return "Realizováno";
 }
 
 function getStatus(item){
-  const stavText = normalize(item.stav);
+  const stavText = normalize(getCodebookValue(item.stav));
   const stavKey = key(item.stav) || clean(item.stav);
-  const referenceType = normalize(getReferenceType(item));
   const reserved = normalize(item.rezervovano);
 
-  // Poski: stav 20 = Aktivní, 30 = Rezervovaná, 40 = Prodaná, 50 = Archivní.
-  // Důležité: referenční nabídky chodí ve stejném exportu jako aktivní nabídky,
-  // proto je nikdy nesmíme zobrazit mezi aktivními nemovitostmi.
+  if(hasMeaningfulReference(item)){
+    return "sold";
+  }
+
   if(
-    hasMeaningfulReference(item) ||
     stavKey === "40" ||
     stavKey === "50" ||
-    stavText.includes("prodana") ||
-    stavText.includes("prodano") ||
-    stavText.includes("pronajata") ||
-    stavText.includes("pronajato") ||
-    stavText.includes("archiv") ||
-    referenceType.includes("prodano") ||
-    referenceType.includes("pronajato") ||
-    referenceType.includes("realizovano")
+    stavText.includes("prodan") ||
+    stavText.includes("pronajat") ||
+    stavText.includes("archiv")
   ){
     return "sold";
   }
 
-  if(stavKey === "30" || stavText.includes("rezerv") || reserved === "ano" || reserved === "1"){
+  if(
+    stavKey === "30" ||
+    stavText.includes("rezerv") ||
+    reserved === "ano" ||
+    reserved === "1"
+  ){
     return "reserved";
   }
 
@@ -183,52 +240,47 @@ function getStatus(item){
     return "active";
   }
 
-  // Kdyby feed neposlal stav, necháme běžnou nereferenční nabídku jako aktivní.
   return "active";
 }
 
 function getTitle(item){
   const reference = getReference(item) || {};
   const referenceTitle = clean(reference.nadpis);
-  return referenceTitle || clean(item.nadpis_nemovitosti) || clean(item.nadpis) || "Nemovitost v nabídce";
+
+  return (
+    referenceTitle ||
+    clean(item.nadpis_nemovitosti) ||
+    clean(item.nadpis) ||
+    "Nemovitost v nabídce"
+  );
 }
 
 function getDescription(item){
   const reference = getReference(item) || {};
   const referenceDescription = clean(reference.popis);
-  return referenceDescription || clean(item.popis_nemovitosti) || clean(item.popis) || "Detailní informace budou doplněny.";
+
+  return (
+    referenceDescription ||
+    clean(item.popis_nemovitosti) ||
+    clean(item.popis) ||
+    "Detailní informace budou doplněny."
+  );
 }
 
 function getReferencePrice(item){
   const reference = getReference(item) || {};
-  const referenceType = getReferenceType(item);
+  const referenceType = getReferenceType(item) || "Realizováno";
   const referencePrice = clean(reference.cena);
 
   if(referencePrice){
-    const number = Number(referencePrice);
+    const number = Number(String(referencePrice).replace(",", "."));
+
     if(!Number.isNaN(number) && number > 0){
       return number.toLocaleString("cs-CZ") + " Kč";
     }
   }
 
   return referenceType;
-}
-
-function boolText(value){
-  const normalized = normalize(value);
-  if(!normalized) return "";
-  if(normalized === "ano" || normalized === "1") return "Ano";
-  if(normalized === "ne" || normalized === "0") return "Ne";
-  return clean(value);
-}
-
-function formatDate(value){
-  const v = clean(value);
-  if(!v) return "";
-  const date = v.split(" ")[0];
-  const parts = date.split("-");
-  if(parts.length !== 3) return v;
-  return `${parts[2]}.${parts[1]}.${parts[0]}`;
 }
 
 function getParameters(item){
@@ -246,6 +298,7 @@ function getParameters(item){
       gpsLat: clean(adresa.gps_lat),
       gpsLng: clean(adresa.gps_lng)
     },
+
     offer: {
       typSmlouvy: getCodebookValue(item.typ_nabidky),
       cisloZakazky: clean(item.cislo_nabidky || item.id_nabidka),
@@ -262,17 +315,19 @@ function getParameters(item){
       pocetGarazi: clean(item.garage_count),
       zastavba: getCodebookValue(item.surroundings_type),
       rokKolaudace: clean(item.acceptance_year),
-      datumNasťehovani: formatDate(item.ready_date),
+      datumNastehovani: formatDate(item.ready_date),
       podlazi: clean(item.floor_number),
       pocetPodlazi: clean(item.floors),
       vybaveno: getCodebookValue(item.furnished),
       naklady: clean(item.cost_of_living)
     },
+
     energy: {
       trida: getCodebookValue(item.energy_efficiency_rating),
       vyhlaska: getCodebookValue(item.energy_performance_certificate),
       ukazatel: clean(item.energy_performance_summary)
     },
+
     property: {
       kategorie: getCodebookValue(item.typ_nemovitosti),
       dispozice: getCodebookValue(item.flat_kind || item.advert_room_count),
@@ -320,19 +375,24 @@ function mapXmlProperty(item){
     region: clean(adresa.kraj_nazev),
 
     estateType: getCodebookValue(item.typ_nemovitosti),
-    type: status === "sold" ? referenceType : getCodebookValue(item.typ_nabidky),
+    type: status === "sold"
+      ? referenceType || "Realizováno"
+      : getCodebookValue(item.typ_nabidky),
 
     usableArea: formatArea(item.usable_area || item.floor_area || item.total_area),
     plotArea: formatArea(item.plot_area),
     floor: clean(item.floor_number) || "—",
     condition: getCodebookValue(item.building_condition) || "—",
     energyClass: getCodebookValue(item.energy_efficiency_rating) || "—",
+
     updated: clean(item.updated),
     created: clean(item.created),
     readyDate: formatDate(item.ready_date),
     statusText: getCodebookValue(item.stav) || status,
     referenceType,
+
     parameters: getParameters(item),
+
     gpsLat: clean(adresa.gps_lat),
     gpsLng: clean(adresa.gps_lng),
     matterportUrl: clean(item.matterport_url),
@@ -351,7 +411,7 @@ const fallbackData = [
     status: "active",
     title: "Testovací nabídka",
     description: "Toto je pouze testovací nabídka. Po vložení XML feedu se zde zobrazí reálné nemovitosti z Poski.",
-    longDescription: "Tato položka slouží pouze pro otestování webu. Jakmile bude ve Vercelu vložena skutečná hodnota POSKI_XML_URL, API začne automaticky načítat reálná data a fotografie přímo z exportu.",
+    longDescription: "Tato položka slouží pouze pro otestování webu.",
     price: "Cena u makléře",
     city: "Olomouc",
     street: "",
@@ -367,72 +427,6 @@ const fallbackData = [
     image: FALLBACK_IMAGE,
     gallery: [FALLBACK_IMAGE],
     source: "fallback"
-  },
-  {
-    id: "realizace-1",
-    status: "sold",
-    title: "Prodej pozemku",
-    description: "Ukázka realizovaného prodeje pozemku v Olomouckém kraji.",
-    longDescription: "Tato položka slouží jako ukázka realizovaného obchodu. Po napojení na Poski export se zde mohou zobrazovat skutečné prodané nebo pronajaté nemovitosti.",
-    price: "Prodáno",
-    city: "Olomoucký kraj",
-    street: "",
-    district: "Olomouc",
-    region: "Olomoucký kraj",
-    estateType: "Pozemek",
-    type: "Prodáno",
-    usableArea: "—",
-    plotArea: "—",
-    floor: "—",
-    condition: "—",
-    energyClass: "—",
-    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1200&auto=format&fit=crop",
-    gallery: ["https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1200&auto=format&fit=crop"],
-    source: "fallback"
-  },
-  {
-    id: "realizace-2",
-    status: "sold",
-    title: "Pronájem bytu",
-    description: "Ukázka realizovaného pronájmu bytové jednotky.",
-    longDescription: "Tato položka slouží jako ukázka realizovaného pronájmu. Později ji lze nahradit skutečnou realizací z exportu nebo ručně doplněnými daty.",
-    price: "Pronajato",
-    city: "Olomouc",
-    street: "",
-    district: "Olomouc",
-    region: "Olomoucký kraj",
-    estateType: "Byt",
-    type: "Pronajato",
-    usableArea: "—",
-    plotArea: "—",
-    floor: "—",
-    condition: "—",
-    energyClass: "—",
-    image: FALLBACK_IMAGE,
-    gallery: [FALLBACK_IMAGE],
-    source: "fallback"
-  },
-  {
-    id: "realizace-3",
-    status: "sold",
-    title: "Pronájem komerčního prostoru",
-    description: "Ukázka realizovaného komerčního pronájmu.",
-    longDescription: "Tato položka slouží jako ukázka realizovaného komerčního pronájmu. Po získání skutečných dat ji lze nahradit reálným obchodem.",
-    price: "Realizováno",
-    city: "Olomouc",
-    street: "",
-    district: "Olomouc",
-    region: "Olomoucký kraj",
-    estateType: "Komerční prostory",
-    type: "Realizováno",
-    usableArea: "—",
-    plotArea: "—",
-    floor: "—",
-    condition: "—",
-    energyClass: "—",
-    image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1200&auto=format&fit=crop",
-    gallery: ["https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1200&auto=format&fit=crop"],
-    source: "fallback"
   }
 ];
 
@@ -446,9 +440,27 @@ function sortProperties(properties){
 
 function filterByStatus(properties, status){
   if(!status || status === "all") return properties;
-  if(status === "active") return properties.filter(item => item.status === "active");
-  if(status === "sold") return properties.filter(item => item.status === "sold");
-  if(status === "reserved") return properties.filter(item => item.status === "reserved");
+
+  if(status === "active"){
+    return properties.filter(item => item.status === "active" || item.status === "reserved");
+  }
+
+  if(status === "sold"){
+    return properties.filter(item => item.status === "sold");
+  }
+
+  if(status === "reserved"){
+    return properties.filter(item => item.status === "reserved");
+  }
+
+  if(status === "rented"){
+    return properties.filter(item => normalize(item.type).includes("pronajato"));
+  }
+
+  if(status === "soldOnly"){
+    return properties.filter(item => normalize(item.type).includes("prodano"));
+  }
+
   return properties.filter(item => item.status === status);
 }
 
@@ -466,7 +478,7 @@ export default async function handler(req, res){
 
   try{
     if(FEED_URL && !FEED_URL.includes("example.com")){
-      const response = await fetch(FEED_URL, {
+      const response = await fetch(buildFeedUrl(FEED_URL), {
         headers: {
           "User-Agent": "KamilaKoprivovaWebsite/1.0"
         }
@@ -538,19 +550,12 @@ export default async function handler(req, res){
     return res.status(200).json(filterByStatus(properties, status));
 
   }catch(error){
-    let properties = sortProperties([...fallbackData]);
-
-    if(id){
-      const detail = properties.find(item => String(item.id) === String(id));
-      if(detail) return res.status(200).json(detail);
-    }
-
     return res.status(200).json({
       error: true,
       source: "fallback",
-      message: "XML feed zatím není dostupný. Web je technicky připravený na Poski export.",
+      message: "XML feed zatím není dostupný.",
       detail: error.message,
-      items: filterByStatus(properties, status)
+      items: filterByStatus(sortProperties([...fallbackData]), status)
     });
   }
 }
