@@ -1,0 +1,1135 @@
+<!-- oceneni-nemovitosti.html -->
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ocenění nemovitosti | Kamila Kopřivová</title>
+
+<meta name="description" content="Nezávazné ocenění nemovitosti od Ing. Kamily Kopřivové. Zjistěte reálnou hodnotu bytu, domu, pozemku nebo komerční nemovitosti v Olomouckém kraji.">
+<meta name="keywords" content="ocenění nemovitosti Olomouc, odhad ceny nemovitosti, realitní makléřka Olomouc, Kamila Kopřivová, cena nemovitosti Olomoucký kraj">
+<meta name="author" content="Ing. Kamila Kopřivová">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#121b3f">
+
+<link rel="canonical" href="https://kamila-self.vercel.app/oceneni-nemovitosti">
+
+<meta property="og:title" content="Ocenění nemovitosti | Kamila Kopřivová">
+<meta property="og:description" content="Zjistěte reálnou hodnotu bytu, domu, pozemku nebo komerční nemovitosti v Olomouckém kraji.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kamila-self.vercel.app/oceneni-nemovitosti">
+<meta property="og:image" content="https://kamila-self.vercel.app/images/IMG_1011.png">
+<meta property="og:locale" content="cs_CZ">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ocenění nemovitosti | Kamila Kopřivová">
+<meta name="twitter:description" content="Nezávazné ocenění nemovitosti v Olomouckém kraji.">
+<meta name="twitter:image" content="https://kamila-self.vercel.app/images/IMG_1011.png">
+
+<link rel="preload" as="image" href="images/IMG_1011.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+--white:#ffffff;
+--soft:#f7f5f0;
+--gold:#c8ab72;
+--gold-light:#eadcc0;
+--navy:#121b3f;
+--navy-soft:#1d2d63;
+--text:#2d2d2d;
+--muted:#777;
+--border:#ece6da;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+font-family:"Montserrat",sans-serif;
+background:white;
+color:var(--text);
+line-height:1.7;
+overflow-x:hidden;
+opacity:0;
+animation:pageLoad .8s ease forwards;
+}
+
+h1,h2,h3{
+font-family:"Playfair Display",serif;
+font-weight:400;
+}
+
+img{
+max-width:100%;
+display:block;
+}
+
+a{
+-webkit-tap-highlight-color:transparent;
+}
+
+.page-transition{
+position:fixed;
+inset:0;
+background:var(--navy);
+z-index:99999;
+transform:translateY(100%);
+pointer-events:none;
+transition:transform .75s cubic-bezier(.77,0,.175,1);
+}
+
+.page-transition.active{
+transform:translateY(0);
+}
+
+@keyframes pageLoad{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(50px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+@keyframes slowZoom{
+from{transform:scale(1);}
+to{transform:scale(1.08);}
+}
+
+@keyframes lineGrow{
+from{width:0;}
+to{width:110px;}
+}
+
+.reveal{
+opacity:0;
+transform:translateY(45px);
+transition:opacity .9s ease, transform .9s ease;
+}
+
+.reveal.active{
+opacity:1;
+transform:translateY(0);
+}
+
+.reveal-left{
+opacity:0;
+transform:translateX(-70px);
+transition:opacity .9s ease, transform .9s ease;
+}
+
+.reveal-left.active{
+opacity:1;
+transform:translateX(0);
+}
+
+.reveal-right{
+opacity:0;
+transform:translateX(70px);
+transition:opacity .9s ease, transform .9s ease;
+}
+
+.reveal-right.active{
+opacity:1;
+transform:translateX(0);
+}
+
+.delay-1{transition-delay:.12s;}
+.delay-2{transition-delay:.24s;}
+.delay-3{transition-delay:.36s;}
+.delay-4{transition-delay:.48s;}
+.delay-5{transition-delay:.6s;}
+
+header{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+z-index:1000;
+display:grid;
+grid-template-columns:auto 1fr;
+align-items:center;
+gap:30px;
+padding:34px 7%;
+animation:fadeIn 1s ease forwards;
+}
+
+.logo{
+color:white;
+text-decoration:none;
+font-size:24px;
+letter-spacing:3px;
+text-transform:uppercase;
+white-space:nowrap;
+transition:.35s ease;
+}
+
+.logo:hover{
+letter-spacing:4px;
+}
+
+.logo span{
+color:var(--gold-light);
+}
+
+nav{
+display:flex;
+justify-content:flex-end;
+align-items:center;
+gap:28px;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+font-size:12px;
+letter-spacing:2px;
+text-transform:uppercase;
+white-space:nowrap;
+transition:.3s;
+position:relative;
+}
+
+nav a::after{
+content:"";
+position:absolute;
+left:0;
+bottom:-6px;
+width:0;
+height:1px;
+background:var(--gold-light);
+transition:.35s;
+}
+
+nav a:hover{
+color:var(--gold-light);
+}
+
+nav a:hover::after{
+width:100%;
+}
+
+.hero{
+height:85vh;
+min-height:720px;
+background:
+linear-gradient(rgba(18,27,63,.62),rgba(18,27,63,.62)),
+url("images/IMG_1011.png") center/cover;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:0 7%;
+color:white;
+position:relative;
+overflow:hidden;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+inset:0;
+background:url("images/IMG_1011.png") center/cover;
+z-index:-2;
+animation:slowZoom 18s ease-in-out infinite alternate;
+}
+
+.hero::after{
+content:"";
+position:absolute;
+inset:0;
+background:rgba(18,27,63,.62);
+z-index:-1;
+}
+
+.hero-content{
+max-width:1000px;
+}
+
+.hero h1{
+font-size:clamp(40px,7vw,76px);
+letter-spacing:clamp(3px,1vw,8px);
+text-transform:uppercase;
+margin-bottom:24px;
+line-height:1.08;
+animation:fadeUp 1s ease forwards;
+}
+
+.hero-line{
+height:1px;
+background:var(--gold-light);
+margin:0 auto 28px;
+width:0;
+animation:lineGrow 1s ease .35s forwards;
+}
+
+.hero p{
+font-size:15px;
+letter-spacing:3px;
+text-transform:uppercase;
+opacity:0;
+animation:fadeUp 1s ease .45s forwards;
+}
+
+.hero-btn{
+display:inline-block;
+margin-top:34px;
+padding:16px 34px;
+background:white;
+color:var(--navy);
+text-decoration:none;
+font-size:12px;
+letter-spacing:2px;
+text-transform:uppercase;
+transition:.35s ease;
+font-weight:600;
+opacity:0;
+animation:fadeUp 1s ease .6s forwards;
+}
+
+.hero-btn:hover{
+background:var(--gold-light);
+transform:translateY(-3px);
+}
+
+section{
+padding:110px 8%;
+}
+
+.section-label{
+text-align:center;
+font-size:12px;
+letter-spacing:3px;
+text-transform:uppercase;
+color:var(--gold);
+font-weight:600;
+margin-bottom:18px;
+}
+
+.section-title{
+font-size:clamp(34px,4vw,48px);
+color:var(--navy);
+text-align:center;
+margin-bottom:22px;
+line-height:1.2;
+}
+
+.section-subtitle{
+max-width:760px;
+margin:auto;
+text-align:center;
+color:var(--muted);
+margin-bottom:65px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:70px;
+align-items:start;
+overflow:hidden;
+}
+
+.info h2{
+font-size:clamp(34px,4vw,46px);
+color:var(--navy);
+margin-bottom:24px;
+line-height:1.2;
+}
+
+.info p{
+color:var(--muted);
+margin-bottom:20px;
+}
+
+.points{
+margin-top:34px;
+display:grid;
+gap:24px;
+}
+
+.point{
+border-left:2px solid var(--gold);
+padding-left:20px;
+transition:.35s ease;
+}
+
+.point:hover{
+transform:translateX(6px);
+border-left-color:var(--navy);
+}
+
+.point h3{
+font-size:24px;
+color:var(--navy);
+margin-bottom:8px;
+}
+
+.point p{
+margin:0;
+font-size:15px;
+}
+
+.form-box{
+background:white;
+border:1px solid var(--border);
+padding:50px;
+box-shadow:0 24px 60px rgba(18,27,63,.08);
+transition:.35s ease;
+}
+
+.form-box:hover{
+transform:translateY(-6px);
+box-shadow:0 30px 75px rgba(18,27,63,.1);
+}
+
+.form-box h2{
+font-size:clamp(32px,4vw,40px);
+color:var(--navy);
+margin-bottom:12px;
+line-height:1.2;
+}
+
+.form-box p{
+color:var(--muted);
+margin-bottom:28px;
+}
+
+form{
+display:grid;
+gap:18px;
+}
+
+.form-row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:18px;
+}
+
+input,
+select,
+textarea{
+width:100%;
+padding:16px 15px;
+border:1px solid var(--border);
+font-family:"Montserrat",sans-serif;
+font-size:14px;
+outline:none;
+transition:.3s ease;
+background:white;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+border-color:var(--gold);
+box-shadow:0 0 0 3px rgba(200,171,114,.12);
+}
+
+textarea{
+min-height:130px;
+resize:vertical;
+}
+
+.form-note{
+font-size:12px;
+color:var(--muted);
+line-height:1.5;
+margin-top:-4px;
+}
+
+.submit-btn{
+padding:16px;
+background:var(--navy);
+color:white;
+border:none;
+font-size:12px;
+letter-spacing:2px;
+text-transform:uppercase;
+cursor:pointer;
+transition:.35s ease;
+font-weight:600;
+}
+
+.submit-btn:hover{
+background:var(--gold);
+transform:translateY(-3px);
+}
+
+.benefits{
+background:var(--soft);
+}
+
+.benefit-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+}
+
+.benefit-card{
+background:white;
+border:1px solid var(--border);
+padding:36px;
+text-align:center;
+transition:.35s ease;
+}
+
+.benefit-card:hover{
+transform:translateY(-8px);
+box-shadow:0 24px 60px rgba(18,27,63,.08);
+}
+
+.benefit-card h3{
+font-size:25px;
+color:var(--navy);
+margin-bottom:12px;
+}
+
+.benefit-card p{
+color:var(--muted);
+font-size:15px;
+}
+
+.quote{
+background:
+linear-gradient(rgba(18,27,63,.84),rgba(18,27,63,.84)),
+url("images/IMG_1014.png") center/cover;
+color:white;
+text-align:center;
+padding:130px 8%;
+background-attachment:fixed;
+}
+
+.quote h2{
+font-size:clamp(34px,5vw,52px);
+max-width:1000px;
+margin:auto;
+line-height:1.35;
+}
+
+.quote span{
+color:var(--gold-light);
+}
+
+.cta{
+background:white;
+text-align:center;
+}
+
+.cta-box{
+max-width:850px;
+margin:auto;
+background:var(--soft);
+border:1px solid var(--border);
+padding:60px;
+transition:.35s ease;
+}
+
+.cta-box:hover{
+box-shadow:0 24px 60px rgba(18,27,63,.08);
+}
+
+.cta-box h2{
+font-size:clamp(34px,4vw,42px);
+color:var(--navy);
+margin-bottom:18px;
+line-height:1.2;
+}
+
+.cta-box p{
+color:var(--muted);
+margin-bottom:30px;
+}
+
+.btn{
+display:inline-block;
+padding:16px 34px;
+text-decoration:none;
+font-size:12px;
+letter-spacing:2px;
+text-transform:uppercase;
+transition:.35s ease;
+font-weight:600;
+background:var(--navy);
+color:white;
+}
+
+.btn:hover{
+background:var(--gold);
+transform:translateY(-3px);
+}
+
+.floating-contact{
+position:fixed;
+right:22px;
+bottom:22px;
+z-index:2000;
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.floating-contact a{
+width:54px;
+height:54px;
+border-radius:50%;
+background:var(--navy);
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+text-decoration:none;
+font-size:22px;
+box-shadow:0 12px 30px rgba(18,27,63,.25);
+transition:.35s ease;
+}
+
+.floating-contact a:hover{
+background:var(--gold);
+transform:translateY(-4px);
+}
+
+footer{
+background:var(--navy);
+color:white;
+text-align:center;
+padding:28px;
+font-size:13px;
+letter-spacing:1px;
+}
+
+@media(max-width:1100px){
+
+header{
+display:flex;
+flex-direction:column;
+gap:20px;
+padding:28px 5%;
+}
+
+.logo{
+font-size:21px;
+text-align:center;
+}
+
+nav{
+flex-wrap:wrap;
+justify-content:center;
+gap:12px;
+}
+
+nav a{
+font-size:11px;
+letter-spacing:1.5px;
+background:rgba(255,255,255,.12);
+padding:7px 10px;
+}
+
+nav a::after{
+display:none;
+}
+
+.grid{
+grid-template-columns:1fr;
+}
+
+.benefit-grid{
+grid-template-columns:1fr;
+}
+
+.hero{
+min-height:680px;
+}
+}
+
+@media(max-width:768px){
+
+.hero{
+height:100svh;
+min-height:620px;
+}
+
+.hero p{
+font-size:12px;
+letter-spacing:2px;
+}
+
+.form-box{
+padding:34px 24px;
+}
+
+.form-row{
+grid-template-columns:1fr;
+}
+
+.quote{
+background-attachment:scroll;
+}
+
+.cta-box{
+padding:38px 24px;
+}
+
+section{
+padding:80px 6%;
+}
+
+.btn,
+.hero-btn,
+.submit-btn{
+width:100%;
+max-width:320px;
+text-align:center;
+}
+
+.submit-btn{
+max-width:none;
+}
+
+.floating-contact{
+right:15px;
+bottom:15px;
+}
+}
+
+@media(max-width:420px){
+
+.logo{
+font-size:18px;
+letter-spacing:2px;
+}
+
+nav a{
+font-size:10px;
+padding:6px 8px;
+}
+
+.form-box{
+padding:30px 20px;
+}
+}
+
+@media(prefers-reduced-motion:reduce){
+*{
+animation:none!important;
+transition:none!important;
+scroll-behavior:auto!important;
+}
+
+.reveal,
+.reveal-left,
+.reveal-right{
+opacity:1!important;
+transform:none!important;
+}
+}
+
+/* FINÁLNÍ RESPONSIVE A OPTIMALIZACE */
+html{
+-webkit-text-size-adjust:100%;
+text-size-adjust:100%;
+}
+
+body{
+text-rendering:optimizeLegibility;
+-webkit-font-smoothing:antialiased;
+}
+
+:focus-visible{
+outline:3px solid var(--gold-light);
+outline-offset:4px;
+}
+
+nav a,
+.btn,
+.clean-btn,
+.filter,
+.floating-contact a{
+touch-action:manipulation;
+}
+
+.property,
+.service,
+.why-card,
+.value-card,
+.reference,
+.step,
+.benefit-card{
+will-change:transform;
+}
+
+.property{
+display:flex;
+flex-direction:column;
+height:100%;
+}
+
+.property-image,
+.property > img{
+flex:0 0 auto;
+}
+
+.property-content{
+display:flex;
+flex-direction:column;
+flex:1;
+}
+
+.property-content .price,
+.property-content strong{
+margin-top:auto;
+}
+
+.property-content .btn,
+.property-content .clean-btn{
+align-self:flex-start;
+margin-top:18px;
+}
+
+.property-image img,
+.property > img,
+.hero::before,
+.about-image img{
+backface-visibility:hidden;
+}
+
+.floating-contact{
+right:max(15px,env(safe-area-inset-right));
+bottom:max(15px,env(safe-area-inset-bottom));
+}
+
+.floating-contact a{
+width:52px;
+height:52px;
+}
+
+@media(max-width:1100px){
+header{
+background:linear-gradient(rgba(18,27,63,.78),rgba(18,27,63,.18),transparent);
+}
+
+nav{
+justify-content:center;
+}
+}
+
+@media(max-width:768px){
+header{
+padding-top:calc(22px + env(safe-area-inset-top));
+}
+
+.hero h1{
+word-break:normal;
+hyphens:auto;
+}
+
+.floating-contact a{
+width:48px;
+height:48px;
+font-size:20px;
+}
+}
+
+@media(max-width:420px){
+.property h3,
+.property-content h3{
+font-size:24px;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="page-transition"></div>
+
+<header>
+
+<a href="index.html" class="logo transition-link" aria-label="Kamila Kopřivová – domů">
+Kamila <span>Kopřivová</span>
+</a>
+
+<nav aria-label="Hlavní navigace">
+<a href="index.html" class="transition-link">Domů</a>
+<a href="sluzby.html" class="transition-link">Služby</a>
+<a href="nemovitosti.html" class="transition-link">Nemovitosti</a>
+<a href="realizace.html" class="transition-link">Realizace</a>
+<a href="oceneni-nemovitosti.html" class="transition-link">Ocenění</a>
+<a href="reference.html" class="transition-link">Reference</a>
+<a href="index.html#kontakt">Kontakt</a>
+</nav>
+
+</header>
+
+<section class="hero">
+
+<div class="hero-content">
+
+<h1>Ocenění nemovitosti</h1>
+
+<div class="hero-line"></div>
+
+<p>Zjistěte reálnou hodnotu své nemovitosti</p>
+
+<a href="#formular" class="hero-btn">
+Nezávazně poptat
+</a>
+
+</div>
+
+</section>
+
+<section>
+
+<div class="section-label reveal">
+Ocenění nemovitosti
+</div>
+
+<h2 class="section-title reveal delay-1">
+Správná cena rozhoduje
+</h2>
+
+<p class="section-subtitle reveal delay-2">
+Pomohu vám získat realistický pohled na hodnotu nemovitosti
+a navrhnu vhodnou strategii prodeje nebo pronájmu.
+</p>
+
+<div class="grid">
+
+<div class="info reveal-left">
+
+<h2>
+Profesionální pohled na hodnotu vaší nemovitosti
+</h2>
+
+<p>
+Každá nemovitost je jiná. Hodnotu ovlivňuje lokalita,
+stav, dispozice, poptávka i způsob prezentace.
+</p>
+
+<p>
+Díky zkušenostem z realitního trhu pomohu určit cenu,
+která bude odpovídat aktuální situaci a potenciálu nemovitosti.
+</p>
+
+<div class="points">
+
+<div class="point">
+<h3>Reálná tržní cena</h3>
+<p>Ocenění vychází z aktuálního trhu a srovnatelných nabídek.</p>
+</div>
+
+<div class="point">
+<h3>Strategie prodeje</h3>
+<p>Společně nastavíme vhodný postup a prezentaci nemovitosti.</p>
+</div>
+
+<div class="point">
+<h3>Nezávazná konzultace</h3>
+<p>Vše můžeme nezávazně probrat osobně nebo telefonicky.</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="form-box reveal-right" id="formular">
+
+<h2>Nezávazná poptávka</h2>
+
+<p>
+Vyplňte základní informace a ozvu se vám zpět.
+</p>
+
+<form action="mailto:koprivovakamila@gmail.com" method="post" enctype="text/plain">
+
+<div class="form-row">
+<input type="text" name="Jméno" placeholder="Jméno a příjmení" autocomplete="name" required>
+<input type="tel" name="Telefon" placeholder="Telefon" autocomplete="tel" required>
+</div>
+
+<input type="email" name="E-mail" placeholder="E-mail" autocomplete="email" required>
+
+<div class="form-row">
+<select name="Typ nemovitosti" required>
+<option value="">Typ nemovitosti</option>
+<option>Byt</option>
+<option>Dům</option>
+<option>Pozemek</option>
+<option>Komerční prostor</option>
+</select>
+
+<select name="Záměr" required>
+<option value="">Záměr</option>
+<option>Prodej</option>
+<option>Pronájem</option>
+<option>Zatím se rozhoduji</option>
+</select>
+</div>
+
+<input type="text" name="Lokalita" placeholder="Lokalita" autocomplete="address-level2" required>
+
+<textarea name="Zpráva" placeholder="Krátký popis nemovitosti"></textarea>
+
+<p class="form-note">
+Odesláním se otevře e-mailový klient s předvyplněnou zprávou. Později lze formulář napojit přes Formspree nebo backend.
+</p>
+
+<button type="submit" class="submit-btn">
+Odeslat poptávku
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="benefits">
+
+<div class="section-label reveal">
+Co získáte
+</div>
+
+<h2 class="section-title reveal delay-1">
+Ocenění jako první krok k úspěšnému obchodu
+</h2>
+
+<p class="section-subtitle reveal delay-2">
+Správně nastavená cena pomáhá předejít zbytečnému čekání,
+špatnému nastavení nabídky i ztrátě zájmu kupujících.
+</p>
+
+<div class="benefit-grid">
+
+<div class="benefit-card reveal delay-1">
+<h3>Přehled o trhu</h3>
+<p>Získáte lepší představu o aktuální hodnotě vaší nemovitosti.</p>
+</div>
+
+<div class="benefit-card reveal delay-2">
+<h3>Doporučený postup</h3>
+<p>Navrhnu vhodnou strategii pro prodej, pronájem nebo další rozhodování.</p>
+</div>
+
+<div class="benefit-card reveal delay-3">
+<h3>Jasný start</h3>
+<p>Budete vědět, zda je správný čas jednat a jak nemovitost připravit.</p>
+</div>
+
+</div>
+
+</section>
+
+<section class="quote">
+
+<h2 class="reveal">
+„Dobře nastavená cena a kvalitní prezentace jsou
+<span>základem úspěšného realitního obchodu.</span>“
+</h2>
+
+</section>
+
+<section class="cta">
+
+<div class="cta-box reveal">
+
+<h2>Raději vše proberete osobně?</h2>
+
+<p>
+Zavolejte nebo napište. Společně projdeme vaši situaci a možnosti vaší nemovitosti.
+</p>
+
+<a href="tel:+420736167321" class="btn">
+Zavolat
+</a>
+
+</div>
+
+</section>
+
+<div class="floating-contact">
+<a href="tel:+420736167321" title="Zavolat" aria-label="Zavolat">☎</a>
+<a href="mailto:koprivovakamila@gmail.com" title="E-mail" aria-label="Napsat e-mail">✉</a>
+<a href="https://wa.me/420736167321" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="Otevřít WhatsApp">💬</a>
+</div>
+
+<footer>
+© 2026 Kamila Kopřivová | Realitní makléřka
+</footer>
+
+<script>
+const transitionLinks = document.querySelectorAll(".transition-link");
+const transition = document.querySelector(".page-transition");
+
+transitionLinks.forEach(link => {
+  link.addEventListener("click", e => {
+    const href = link.getAttribute("href");
+
+    if(
+      !href ||
+      href.startsWith("#") ||
+      href.startsWith("mailto") ||
+      href.startsWith("tel") ||
+      href.startsWith("https://wa.me")
+    ){
+      return;
+    }
+
+    e.preventDefault();
+    transition.classList.add("active");
+
+    setTimeout(() => {
+      window.location.href = href;
+    }, 650);
+  });
+});
+
+const revealElements = document.querySelectorAll(
+  ".reveal, .reveal-left, .reveal-right"
+);
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add("active");
+    }
+  });
+},{
+  threshold:.15
+});
+
+revealElements.forEach(el => {
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>

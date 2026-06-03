@@ -1,0 +1,1165 @@
+<!-- realizace.html -->
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Realizované obchody | Kamila Kopřivová</title>
+
+<meta name="description" content="Realizované prodeje a pronájmy Ing. Kamily Kopřivové v Olomouckém kraji. Ukázka prodaných a pronajatých nemovitostí.">
+<meta name="keywords" content="realizované prodeje Olomouc, prodané nemovitosti, pronajaté byty Olomouc, Kamila Kopřivová realizace, prodané byty Olomoucký kraj">
+<meta name="author" content="Ing. Kamila Kopřivová">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#121b3f">
+
+<link rel="canonical" href="https://kamila-self.vercel.app/realizace">
+
+<meta property="og:title" content="Realizované obchody | Kamila Kopřivová">
+<meta property="og:description" content="Ukázka úspěšně prodaných a pronajatých nemovitostí v Olomouckém kraji.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kamila-self.vercel.app/realizace">
+<meta property="og:image" content="https://kamila-self.vercel.app/images/IMG_1007.png">
+<meta property="og:locale" content="cs_CZ">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Realizované obchody | Kamila Kopřivová">
+<meta name="twitter:description" content="Realizované prodeje a pronájmy nemovitostí v Olomouckém kraji.">
+<meta name="twitter:image" content="https://kamila-self.vercel.app/images/IMG_1007.png">
+
+<link rel="preload" as="image" href="images/IMG_1007.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--white:#ffffff;
+--soft:#f7f5f0;
+--gold:#c8ab72;
+--gold-light:#eadcc0;
+--navy:#121b3f;
+--text:#2d2d2d;
+--muted:#777;
+--border:#ece6da;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+font-family:"Montserrat",sans-serif;
+background:white;
+color:var(--text);
+line-height:1.7;
+overflow-x:hidden;
+opacity:0;
+animation:pageLoad .8s ease forwards;
+}
+
+h1,h2,h3{
+font-family:"Playfair Display",serif;
+font-weight:400;
+}
+
+img{
+max-width:100%;
+display:block;
+}
+
+a{
+-webkit-tap-highlight-color:transparent;
+}
+
+.page-transition{
+position:fixed;
+inset:0;
+background:var(--navy);
+z-index:99999;
+transform:translateY(100%);
+pointer-events:none;
+transition:transform .75s cubic-bezier(.77,0,.175,1);
+}
+
+.page-transition.active{
+transform:translateY(0);
+}
+
+@keyframes pageLoad{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(50px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+@keyframes slowZoom{
+from{transform:scale(1);}
+to{transform:scale(1.08);}
+}
+
+@keyframes lineGrow{
+from{width:0;}
+to{width:110px;}
+}
+
+.reveal{
+opacity:0;
+transform:translateY(45px);
+transition:opacity .9s ease, transform .9s ease;
+}
+
+.reveal.active{
+opacity:1;
+transform:translateY(0);
+}
+
+.delay-1{transition-delay:.12s;}
+.delay-2{transition-delay:.24s;}
+.delay-3{transition-delay:.36s;}
+.delay-4{transition-delay:.48s;}
+.delay-5{transition-delay:.6s;}
+
+header{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+z-index:1000;
+display:grid;
+grid-template-columns:auto 1fr;
+align-items:center;
+gap:30px;
+padding:34px 7%;
+animation:fadeIn 1s ease forwards;
+}
+
+.logo{
+color:white;
+text-decoration:none;
+font-size:24px;
+letter-spacing:3px;
+text-transform:uppercase;
+white-space:nowrap;
+transition:.35s ease;
+}
+
+.logo:hover{
+letter-spacing:4px;
+}
+
+.logo span{
+color:var(--gold-light);
+}
+
+nav{
+display:flex;
+justify-content:flex-end;
+align-items:center;
+gap:28px;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+font-size:12px;
+letter-spacing:2px;
+text-transform:uppercase;
+white-space:nowrap;
+transition:.3s;
+position:relative;
+}
+
+nav a::after{
+content:"";
+position:absolute;
+left:0;
+bottom:-6px;
+width:0;
+height:1px;
+background:var(--gold-light);
+transition:.35s;
+}
+
+nav a:hover{
+color:var(--gold-light);
+}
+
+nav a:hover::after{
+width:100%;
+}
+
+.hero{
+height:75vh;
+min-height:680px;
+background:
+linear-gradient(rgba(18,27,63,.64),rgba(18,27,63,.64)),
+url("images/IMG_1007.png") center/cover;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:0 7%;
+color:white;
+position:relative;
+overflow:hidden;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+inset:0;
+background:url("images/IMG_1007.png") center/cover;
+z-index:-2;
+animation:slowZoom 18s ease-in-out infinite alternate;
+}
+
+.hero::after{
+content:"";
+position:absolute;
+inset:0;
+background:rgba(18,27,63,.64);
+z-index:-1;
+}
+
+.hero h1{
+font-size:clamp(42px,7vw,76px);
+letter-spacing:clamp(4px,1vw,8px);
+text-transform:uppercase;
+margin-bottom:24px;
+line-height:1.08;
+animation:fadeUp 1s ease forwards;
+}
+
+.hero-line{
+height:1px;
+background:var(--gold-light);
+margin:0 auto 28px;
+width:0;
+animation:lineGrow 1s ease .35s forwards;
+}
+
+.hero p{
+font-size:15px;
+letter-spacing:3px;
+text-transform:uppercase;
+opacity:0;
+animation:fadeUp 1s ease .45s forwards;
+}
+
+section{
+padding:110px 8%;
+}
+
+.section-label{
+text-align:center;
+font-size:12px;
+letter-spacing:3px;
+text-transform:uppercase;
+color:var(--gold);
+font-weight:600;
+margin-bottom:18px;
+}
+
+.section-title{
+font-size:clamp(34px,4vw,48px);
+color:var(--navy);
+text-align:center;
+margin-bottom:22px;
+line-height:1.2;
+}
+
+.section-subtitle{
+max-width:760px;
+margin:auto;
+text-align:center;
+color:var(--muted);
+margin-bottom:60px;
+}
+
+.import-note{
+max-width:900px;
+margin:0 auto 55px;
+padding:28px;
+background:var(--soft);
+border:1px solid var(--border);
+text-align:center;
+color:var(--muted);
+font-size:15px;
+}
+
+.import-note strong{
+color:var(--navy);
+}
+
+.import-note.success{
+background:#f7fbf7;
+}
+
+.import-note.error{
+background:#fff7f7;
+}
+
+.filters{
+display:flex;
+justify-content:center;
+gap:14px;
+flex-wrap:wrap;
+margin-bottom:55px;
+}
+
+.filter{
+padding:12px 22px;
+border:1px solid var(--border);
+background:white;
+color:var(--navy);
+font-size:12px;
+letter-spacing:2px;
+text-transform:uppercase;
+font-weight:600;
+cursor:pointer;
+transition:.35s ease;
+}
+
+.filter:hover{
+transform:translateY(-3px);
+}
+
+.filter.active,
+.filter:hover{
+background:var(--navy);
+color:white;
+border-color:var(--navy);
+}
+
+.properties{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:34px;
+align-items:start;
+}
+
+.loading-text{
+grid-column:1/-1;
+text-align:center;
+color:var(--muted);
+padding:40px;
+}
+
+.property{
+background:white;
+border:1px solid var(--border);
+transition:opacity .35s ease, transform .35s ease, box-shadow .35s ease;
+opacity:1;
+transform:scale(1);
+overflow:hidden;
+position:relative;
+}
+
+.property::before{
+content:"Realizováno";
+position:absolute;
+top:18px;
+left:18px;
+z-index:5;
+background:var(--navy);
+color:white;
+padding:8px 14px;
+font-size:11px;
+letter-spacing:2px;
+text-transform:uppercase;
+font-weight:600;
+}
+
+.property.is-hidden{
+opacity:0;
+transform:scale(.96);
+pointer-events:none;
+}
+
+.property:hover{
+transform:translateY(-8px);
+box-shadow:0 24px 60px rgba(18,27,63,.08);
+}
+
+.property-image{
+height:310px;
+overflow:hidden;
+}
+
+.property-image img{
+width:100%;
+height:100%;
+object-fit:cover;
+transition:.7s ease;
+}
+
+.property:hover .property-image img{
+transform:scale(1.06);
+}
+
+.property-content{
+padding:30px;
+}
+
+.property-type{
+color:var(--gold);
+font-size:12px;
+letter-spacing:2px;
+text-transform:uppercase;
+font-weight:600;
+margin-bottom:12px;
+}
+
+.property h3{
+font-size:27px;
+line-height:1.25;
+color:var(--navy);
+margin-bottom:12px;
+}
+
+.location{
+color:var(--muted);
+font-size:15px;
+margin-bottom:16px;
+}
+
+.desc{
+color:var(--muted);
+font-size:15px;
+margin-bottom:22px;
+}
+
+.price{
+font-size:20px;
+font-weight:600;
+color:var(--navy);
+margin-bottom:24px;
+}
+
+.btn{
+display:inline-block;
+padding:14px 26px;
+text-decoration:none;
+font-size:12px;
+letter-spacing:2px;
+text-transform:uppercase;
+font-weight:600;
+transition:.35s ease;
+background:var(--navy);
+color:white;
+}
+
+.btn:hover{
+background:var(--gold);
+transform:translateY(-3px);
+}
+
+.cta{
+background:
+linear-gradient(rgba(18,27,63,.84),rgba(18,27,63,.84)),
+url("images/IMG_1014.png") center/cover;
+color:white;
+text-align:center;
+padding:130px 8%;
+background-attachment:fixed;
+}
+
+.cta h2{
+font-size:clamp(34px,5vw,52px);
+max-width:900px;
+margin:auto;
+margin-bottom:24px;
+line-height:1.35;
+}
+
+.cta p{
+max-width:700px;
+margin:auto;
+margin-bottom:34px;
+color:#e6e6e6;
+}
+
+.floating-contact{
+position:fixed;
+right:22px;
+bottom:22px;
+display:flex;
+flex-direction:column;
+gap:12px;
+z-index:3000;
+}
+
+.floating-contact a{
+width:56px;
+height:56px;
+border-radius:50%;
+background:var(--navy);
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+text-decoration:none;
+font-size:22px;
+box-shadow:0 14px 35px rgba(18,27,63,.25);
+transition:.35s ease;
+}
+
+.floating-contact a:hover{
+background:var(--gold);
+transform:translateY(-4px);
+}
+
+footer{
+background:var(--navy);
+color:white;
+text-align:center;
+padding:28px;
+font-size:13px;
+letter-spacing:1px;
+}
+
+@media(max-width:1100px){
+
+header{
+display:flex;
+flex-direction:column;
+gap:20px;
+padding:28px 5%;
+}
+
+.logo{
+font-size:21px;
+text-align:center;
+}
+
+nav{
+flex-wrap:wrap;
+justify-content:center;
+gap:12px;
+}
+
+nav a{
+font-size:11px;
+letter-spacing:1.5px;
+background:rgba(255,255,255,.12);
+padding:7px 10px;
+}
+
+nav a::after{
+display:none;
+}
+
+.hero{
+min-height:660px;
+}
+}
+
+@media(max-width:768px){
+
+.hero{
+height:100svh;
+min-height:600px;
+}
+
+.hero p{
+font-size:12px;
+letter-spacing:2px;
+}
+
+.properties{
+grid-template-columns:1fr;
+}
+
+.property-image{
+height:260px;
+}
+
+.cta{
+background-attachment:scroll;
+}
+
+section{
+padding:80px 6%;
+}
+
+.btn{
+width:100%;
+text-align:center;
+}
+
+.filter{
+font-size:11px;
+padding:10px 14px;
+}
+
+.floating-contact{
+right:15px;
+bottom:15px;
+}
+}
+
+@media(max-width:420px){
+
+.logo{
+font-size:18px;
+letter-spacing:2px;
+}
+
+nav a{
+font-size:10px;
+padding:6px 8px;
+}
+
+.import-note{
+padding:22px;
+}
+
+.property-content{
+padding:26px;
+}
+}
+
+@media(prefers-reduced-motion:reduce){
+*{
+animation:none!important;
+transition:none!important;
+scroll-behavior:auto!important;
+}
+
+.reveal{
+opacity:1!important;
+transform:none!important;
+}
+}
+
+
+/* FINÁLNÍ RESPONSIVE A OPTIMALIZACE */
+html{
+-webkit-text-size-adjust:100%;
+text-size-adjust:100%;
+}
+
+body{
+text-rendering:optimizeLegibility;
+-webkit-font-smoothing:antialiased;
+}
+
+:focus-visible{
+outline:3px solid var(--gold-light);
+outline-offset:4px;
+}
+
+nav a,
+.btn,
+.clean-btn,
+.filter,
+.floating-contact a{
+touch-action:manipulation;
+}
+
+.property,
+.service,
+.why-card,
+.value-card,
+.reference,
+.step,
+.benefit-card{
+will-change:transform;
+}
+
+.property{
+display:flex;
+flex-direction:column;
+height:100%;
+}
+
+.property-image,
+.property > img{
+flex:0 0 auto;
+}
+
+.property-content{
+display:flex;
+flex-direction:column;
+flex:1;
+}
+
+.property-content .price,
+.property-content strong{
+margin-top:auto;
+}
+
+.property-content .btn,
+.property-content .clean-btn{
+align-self:flex-start;
+margin-top:18px;
+}
+
+.property-image img,
+.property > img,
+.hero::before,
+.about-image img{
+backface-visibility:hidden;
+}
+
+.floating-contact{
+right:max(15px,env(safe-area-inset-right));
+bottom:max(15px,env(safe-area-inset-bottom));
+}
+
+.floating-contact a{
+width:52px;
+height:52px;
+}
+
+@media(max-width:1100px){
+header{
+background:linear-gradient(rgba(18,27,63,.78),rgba(18,27,63,.18),transparent);
+}
+
+nav{
+justify-content:center;
+}
+}
+
+@media(max-width:768px){
+header{
+padding-top:calc(22px + env(safe-area-inset-top));
+}
+
+.hero h1{
+word-break:normal;
+hyphens:auto;
+}
+
+.floating-contact a{
+width:48px;
+height:48px;
+font-size:20px;
+}
+}
+
+@media(max-width:420px){
+.property h3,
+.property-content h3{
+font-size:24px;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="page-transition"></div>
+
+<header>
+
+<a href="index.html" class="logo transition-link" aria-label="Kamila Kopřivová – domů">
+Kamila <span>Kopřivová</span>
+</a>
+
+<nav aria-label="Hlavní navigace">
+<a href="index.html" class="transition-link">Domů</a>
+<a href="sluzby.html" class="transition-link">Služby</a>
+<a href="nemovitosti.html" class="transition-link">Nemovitosti</a>
+<a href="realizace.html" class="transition-link">Realizace</a>
+<a href="oceneni-nemovitosti.html" class="transition-link">Ocenění</a>
+<a href="reference.html" class="transition-link">Reference</a>
+<a href="index.html#kontakt">Kontakt</a>
+</nav>
+
+</header>
+
+<section class="hero">
+
+<div>
+<h1>Realizace</h1>
+<div class="hero-line"></div>
+<p>Úspěšně dokončené prodeje a pronájmy</p>
+</div>
+
+</section>
+
+<section>
+
+<div class="section-label reveal">
+Realizované obchody
+</div>
+
+<h2 class="section-title reveal delay-1">
+Vybrané realizace
+</h2>
+
+<p class="section-subtitle reveal delay-2">
+Ukázka prodaných a pronajatých nemovitostí, které prošly profesionální prezentací a realitním servisem.
+</p>
+
+<div class="import-note reveal delay-3" id="importNote">
+<strong>Automatický import:</strong>
+Načítám realizované obchody z realitního systému.
+</div>
+
+<div class="filters reveal delay-4">
+<button class="filter active" data-filter="all">Vše</button>
+<button class="filter" data-filter="byt">Byty</button>
+<button class="filter" data-filter="dum">Domy</button>
+<button class="filter" data-filter="pozemek">Pozemky</button>
+<button class="filter" data-filter="komerce">Komerční</button>
+<button class="filter" data-filter="prodano">Prodáno</button>
+<button class="filter" data-filter="pronajato">Pronajato</button>
+</div>
+
+<div class="properties" id="propertiesGrid">
+<div class="loading-text">Načítám realizace...</div>
+</div>
+
+</section>
+
+<section class="cta">
+
+<h2 class="reveal">
+Chcete podobně úspěšný výsledek?
+</h2>
+
+<p class="reveal delay-1">
+Ozvěte se paní Kopřivové a proberte možnosti prodeje, pronájmu nebo ocenění vaší nemovitosti.
+</p>
+
+<a href="index.html#kontakt" class="btn reveal delay-2 transition-link">
+Kontaktovat makléřku
+</a>
+
+</section>
+
+<div class="floating-contact">
+<a href="tel:+420736167321" title="Zavolat" aria-label="Zavolat">☎</a>
+<a href="mailto:koprivovakamila@gmail.com" title="E-mail" aria-label="Napsat e-mail">✉</a>
+<a href="https://wa.me/420736167321" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="Otevřít WhatsApp">💬</a>
+</div>
+
+<footer>
+© 2026 Kamila Kopřivová | Realitní makléřka
+</footer>
+
+<script>
+const transition = document.querySelector(".page-transition");
+const propertiesGrid = document.querySelector("#propertiesGrid");
+const importNote = document.querySelector("#importNote");
+
+function setupTransitionLinks(){
+  const transitionLinks = document.querySelectorAll(".transition-link");
+
+  transitionLinks.forEach(link => {
+    link.onclick = e => {
+      const href = link.getAttribute("href");
+
+      if(
+        !href ||
+        href.startsWith("#") ||
+        href.startsWith("mailto") ||
+        href.startsWith("tel") ||
+        href.startsWith("https://wa.me")
+      ){
+        return;
+      }
+
+      e.preventDefault();
+      transition.classList.add("active");
+
+      setTimeout(() => {
+        window.location.href = href;
+      }, 650);
+    };
+  });
+}
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add("active");
+    }
+  });
+},{
+  threshold:.15
+});
+
+function setupReveal(){
+  document.querySelectorAll(".reveal").forEach(el => {
+    observer.observe(el);
+  });
+}
+
+function clean(value){
+  return value ? String(value).trim() : "";
+}
+
+function escapeHTML(value){
+  return clean(value).replace(/[&<>"']/g, char => {
+    return {
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      "\"":"&quot;",
+      "'":"&#039;"
+    }[char];
+  });
+}
+
+function normalize(value){
+  return clean(value).toLowerCase();
+}
+
+function getTitle(item){
+  return clean(
+    item.title ||
+    item.nadpis_nemovitosti ||
+    item.nadpis ||
+    "Realizovaná nemovitost"
+  );
+}
+
+function getEstateType(item){
+  return clean(
+    item.estateType ||
+    item.typ_nemovitosti ||
+    item.typNemovitosti ||
+    "Nemovitost"
+  );
+}
+
+function getOfferType(item){
+  const price = normalize(item.price);
+  const type = normalize(item.type || item.typ_nabidky || item.typNabidky);
+
+  if(price.includes("pronajato") || type.includes("pronajato")){
+    return "Pronajato";
+  }
+
+  if(price.includes("prodáno") || price.includes("prodano") || type.includes("prodáno") || type.includes("prodano")){
+    return "Prodáno";
+  }
+
+  return clean(item.type || "Realizováno");
+}
+
+function getCategory(item){
+  const estateType = normalize(getEstateType(item));
+  const offerType = normalize(getOfferType(item));
+  const price = normalize(item.price);
+
+  let category = "";
+
+  if(estateType.includes("byt")) category += " byt";
+  if(estateType.includes("dům") || estateType.includes("dum") || estateType.includes("vila")) category += " dum";
+  if(estateType.includes("pozem")) category += " pozemek";
+  if(estateType.includes("komer")) category += " komerce";
+
+  if(offerType.includes("prodáno") || offerType.includes("prodano") || price.includes("prodáno") || price.includes("prodano")){
+    category += " prodano";
+  }
+
+  if(offerType.includes("pronajato") || price.includes("pronajato")){
+    category += " pronajato";
+  }
+
+  return category.trim() || "ostatni";
+}
+
+function getImage(item){
+  if(item.image) return item.image;
+  if(item.fotka) return item.fotka;
+
+  if(Array.isArray(item.gallery) && item.gallery.length){
+    return item.gallery[0];
+  }
+
+  if(Array.isArray(item.images) && item.images.length){
+    return item.images[0];
+  }
+
+  if(Array.isArray(item.fotky) && item.fotky.length){
+    return item.fotky[0];
+  }
+
+  return "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop";
+}
+
+function getPrice(item){
+  if(item.priceText) return item.priceText;
+  if(item.cenaText) return item.cenaText;
+  if(item.price) return clean(item.price);
+
+  return "Realizováno";
+}
+
+function getLocation(item){
+  const city = clean(item.city);
+  const street = clean(item.street);
+
+  if(city && street) return city + ", " + street;
+  if(city) return city;
+
+  if(item.location) return clean(item.location);
+  if(item.lokalita) return clean(item.lokalita);
+
+  return clean(item.region || "Olomoucký kraj");
+}
+
+function getDescription(item){
+  const desc = clean(
+    item.description ||
+    item.popis_nemovitosti ||
+    item.popis
+  );
+
+  if(!desc){
+    return "Realizovaný obchod s profesionální prezentací a kompletním realitním servisem.";
+  }
+
+  return desc.length > 120
+    ? desc.substring(0, 120) + "..."
+    : desc;
+}
+
+function getId(item){
+  return clean(item.id || item.id_nabidka || item.cislo_nabidky);
+}
+
+function getDetailUrl(item){
+  const id = getId(item);
+
+  if(id){
+    return "detail.html?id=" + encodeURIComponent(id);
+  }
+
+  return "#";
+}
+
+function createPropertyCard(item, index){
+  const category = getCategory(item);
+  const delay = "delay-" + ((index % 3) + 1);
+  const title = getTitle(item);
+
+  return `
+    <div class="property reveal ${delay}" data-category="${escapeHTML(category)}">
+      <div class="property-image">
+        <img src="${escapeHTML(getImage(item))}" alt="${escapeHTML(title)}" loading="lazy">
+      </div>
+
+      <div class="property-content">
+        <div class="property-type">${escapeHTML(getOfferType(item))} ${escapeHTML(getEstateType(item))}</div>
+        <h3>${escapeHTML(title)}</h3>
+        <p class="location">${escapeHTML(getLocation(item))}</p>
+        <p class="desc">${escapeHTML(getDescription(item))}</p>
+        <p class="price">${escapeHTML(getPrice(item))}</p>
+        <a href="${escapeHTML(getDetailUrl(item))}" class="btn transition-link">Zobrazit detail</a>
+      </div>
+    </div>
+  `;
+}
+
+async function loadProperties(){
+  try{
+    const response = await fetch("/api/nemovitosti?status=sold");
+
+    if(!response.ok){
+      throw new Error("API není dostupné");
+    }
+
+    const data = await response.json();
+
+    const items = Array.isArray(data)
+      ? data
+      : data.nemovitosti || data.items || data.nabidky || [];
+
+    if(!items.length){
+      throw new Error("Žádné realizace");
+    }
+
+    propertiesGrid.innerHTML = items.map(createPropertyCard).join("");
+
+    importNote.classList.add("success");
+    importNote.classList.remove("error");
+    importNote.innerHTML = "<strong>Automatický import:</strong> Realizované obchody jsou načtené z API.";
+
+    setupFilters();
+    setupReveal();
+    setupTransitionLinks();
+
+  }catch(error){
+
+    propertiesGrid.innerHTML = `
+      <div class="loading-text">
+        Realizace se nepodařilo načíst. Zkontrolujte API nebo XML feed.
+      </div>
+    `;
+
+    importNote.classList.add("error");
+    importNote.classList.remove("success");
+    importNote.innerHTML = "<strong>Automatický import:</strong> Realizované obchody se zatím nepodařilo načíst.";
+  }
+}
+
+function setupFilters(){
+  const buttons = document.querySelectorAll(".filter");
+  const properties = document.querySelectorAll(".property[data-category]");
+
+  buttons.forEach(button => {
+    button.onclick = () => {
+      buttons.forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+
+      const filter = button.getAttribute("data-filter");
+
+      properties.forEach(property => {
+        const category = property.getAttribute("data-category");
+
+        if(filter === "all" || category.includes(filter)){
+          property.style.display = "block";
+
+          setTimeout(() => {
+            property.classList.remove("is-hidden");
+          },20);
+        } else {
+          property.classList.add("is-hidden");
+
+          setTimeout(() => {
+            property.style.display = "none";
+          },250);
+        }
+      });
+    };
+  });
+}
+
+setupTransitionLinks();
+setupReveal();
+loadProperties();
+</script>
+
+</body>
+</html>
