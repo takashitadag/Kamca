@@ -1,0 +1,1120 @@
+<!-- reference.html -->
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Reference | Kamila Kopřivová</title>
+
+<meta name="description" content="Reference klientů Ing. Kamily Kopřivové. Férový přístup, důvěra, kvalitní prezentace a profesionální realitní servis v Olomouckém kraji.">
+<meta name="keywords" content="reference realitní makléřka Olomouc, Kamila Kopřivová reference, realitní servis Olomouc, zkušenosti klientů reality Olomouc">
+<meta name="author" content="Ing. Kamila Kopřivová">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#121b3f">
+
+<link rel="canonical" href="https://kamila-self.vercel.app/reference">
+
+<meta property="og:title" content="Reference | Kamila Kopřivová">
+<meta property="og:description" content="Reference klientů Ing. Kamily Kopřivové. Férový přístup, důvěra a profesionální realitní servis.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kamila-self.vercel.app/reference">
+<meta property="og:image" content="https://kamila-self.vercel.app/images/IMG_1007.png">
+<meta property="og:locale" content="cs_CZ">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Reference | Kamila Kopřivová">
+<meta name="twitter:description" content="Reference klientů a zkušenosti s realitním servisem v Olomouckém kraji.">
+<meta name="twitter:image" content="https://kamila-self.vercel.app/images/IMG_1007.png">
+
+<link rel="preload" as="image" href="images/IMG_1007.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+--white:#ffffff;
+--soft:#f7f5f0;
+--gold:#c8ab72;
+--gold-light:#eadcc0;
+--navy:#121b3f;
+--navy-soft:#1d2d63;
+--text:#2e2e2e;
+--muted:#777;
+--border:#ece6da;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+font-family:"Montserrat",sans-serif;
+background:white;
+color:var(--text);
+line-height:1.7;
+overflow-x:hidden;
+opacity:0;
+animation:pageLoad .8s ease forwards;
+}
+
+h1,h2,h3{
+font-family:"Playfair Display",serif;
+font-weight:400;
+}
+
+img{
+max-width:100%;
+display:block;
+}
+
+a{
+-webkit-tap-highlight-color:transparent;
+}
+
+.page-transition{
+position:fixed;
+inset:0;
+background:var(--navy);
+z-index:99999;
+transform:translateY(100%);
+pointer-events:none;
+transition:transform .75s cubic-bezier(.77,0,.175,1);
+}
+
+.page-transition.active{
+transform:translateY(0);
+}
+
+@keyframes pageLoad{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(50px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+@keyframes slowZoom{
+from{transform:scale(1);}
+to{transform:scale(1.08);}
+}
+
+@keyframes lineGrow{
+from{width:0;}
+to{width:110px;}
+}
+
+.reveal{
+opacity:0;
+transform:translateY(45px);
+transition:opacity .9s ease, transform .9s ease;
+}
+
+.reveal.active{
+opacity:1;
+transform:translateY(0);
+}
+
+.reveal-left{
+opacity:0;
+transform:translateX(-70px);
+transition:opacity .9s ease, transform .9s ease;
+}
+
+.reveal-left.active{
+opacity:1;
+transform:translateX(0);
+}
+
+.reveal-right{
+opacity:0;
+transform:translateX(70px);
+transition:opacity .9s ease, transform .9s ease;
+}
+
+.reveal-right.active{
+opacity:1;
+transform:translateX(0);
+}
+
+.delay-1{transition-delay:.12s;}
+.delay-2{transition-delay:.24s;}
+.delay-3{transition-delay:.36s;}
+.delay-4{transition-delay:.48s;}
+
+header{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+z-index:1000;
+display:grid;
+grid-template-columns:auto 1fr;
+align-items:center;
+gap:30px;
+padding:34px 7%;
+animation:fadeIn 1s ease forwards;
+}
+
+.logo{
+color:white;
+text-decoration:none;
+font-size:24px;
+letter-spacing:3px;
+text-transform:uppercase;
+white-space:nowrap;
+transition:.35s ease;
+}
+
+.logo:hover{
+letter-spacing:4px;
+}
+
+.logo span{
+color:var(--gold-light);
+}
+
+nav{
+display:flex;
+justify-content:flex-end;
+align-items:center;
+gap:28px;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+font-size:12px;
+letter-spacing:2px;
+text-transform:uppercase;
+white-space:nowrap;
+transition:.3s;
+position:relative;
+}
+
+nav a::after{
+content:"";
+position:absolute;
+left:0;
+bottom:-6px;
+width:0;
+height:1px;
+background:var(--gold-light);
+transition:.35s;
+}
+
+nav a:hover{
+color:var(--gold-light);
+}
+
+nav a:hover::after{
+width:100%;
+}
+
+.hero{
+height:75vh;
+min-height:680px;
+background:
+linear-gradient(rgba(18,27,63,.62),rgba(18,27,63,.62)),
+url("images/IMG_1007.png") center/cover;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:0 7%;
+color:white;
+position:relative;
+overflow:hidden;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+inset:0;
+background:url("images/IMG_1007.png") center/cover;
+z-index:-2;
+animation:slowZoom 18s ease-in-out infinite alternate;
+}
+
+.hero::after{
+content:"";
+position:absolute;
+inset:0;
+background:rgba(18,27,63,.62);
+z-index:-1;
+}
+
+.hero-content{
+max-width:1000px;
+}
+
+.hero h1{
+font-size:clamp(42px,7vw,76px);
+letter-spacing:clamp(4px,1vw,8px);
+text-transform:uppercase;
+margin-bottom:24px;
+line-height:1.08;
+animation:fadeUp 1s ease forwards;
+}
+
+.hero-line{
+height:1px;
+background:var(--gold-light);
+margin:0 auto 28px;
+width:0;
+animation:lineGrow 1s ease .35s forwards;
+}
+
+.hero p{
+font-size:15px;
+letter-spacing:3px;
+text-transform:uppercase;
+opacity:0;
+animation:fadeUp 1s ease .45s forwards;
+}
+
+section{
+padding:110px 8%;
+}
+
+.section-label{
+text-align:center;
+font-size:12px;
+letter-spacing:3px;
+text-transform:uppercase;
+color:var(--gold);
+margin-bottom:16px;
+font-weight:600;
+}
+
+.section-title{
+font-size:clamp(34px,4vw,48px);
+color:var(--navy);
+text-align:center;
+margin-bottom:22px;
+line-height:1.2;
+}
+
+.section-subtitle{
+max-width:760px;
+margin:auto;
+text-align:center;
+color:var(--muted);
+margin-bottom:60px;
+}
+
+.references{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:34px;
+}
+
+.reference{
+background:white;
+border:1px solid var(--border);
+padding:40px;
+transition:.35s ease;
+position:relative;
+overflow:hidden;
+}
+
+.reference:hover{
+transform:translateY(-8px);
+box-shadow:0 24px 60px rgba(18,27,63,.08);
+}
+
+.reference::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:3px;
+background:linear-gradient(to right,var(--gold),var(--gold-light));
+}
+
+.stars{
+color:var(--gold);
+font-size:20px;
+margin-bottom:22px;
+letter-spacing:2px;
+}
+
+.reference p{
+color:var(--muted);
+margin-bottom:26px;
+}
+
+.client{
+display:flex;
+align-items:center;
+gap:16px;
+}
+
+.avatar{
+width:58px;
+height:58px;
+border-radius:50%;
+background:var(--navy);
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:600;
+transition:.35s ease;
+}
+
+.reference:hover .avatar{
+background:var(--gold);
+transform:scale(1.05);
+}
+
+.client h3{
+font-size:23px;
+color:var(--navy);
+}
+
+.client span{
+font-size:12px;
+letter-spacing:2px;
+text-transform:uppercase;
+color:var(--gold);
+}
+
+.value{
+background:var(--soft);
+}
+
+.value-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:28px;
+}
+
+.value-card{
+background:white;
+border:1px solid var(--border);
+padding:34px;
+text-align:center;
+transition:.35s ease;
+}
+
+.value-card:hover{
+transform:translateY(-8px);
+box-shadow:0 24px 60px rgba(18,27,63,.08);
+}
+
+.value-card h3{
+font-size:24px;
+color:var(--navy);
+margin-bottom:12px;
+}
+
+.value-card p{
+font-size:14px;
+color:var(--muted);
+}
+
+.quote{
+background:
+linear-gradient(rgba(18,27,63,.82),rgba(18,27,63,.82)),
+url("images/IMG_1014.png") center/cover;
+color:white;
+text-align:center;
+padding:130px 8%;
+background-attachment:fixed;
+}
+
+.quote h2{
+font-size:clamp(34px,5vw,52px);
+max-width:1000px;
+margin:auto;
+line-height:1.35;
+}
+
+.quote span{
+color:var(--gold-light);
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+background:var(--soft);
+border-top:1px solid var(--border);
+border-bottom:1px solid var(--border);
+}
+
+.stat{
+padding:70px 20px;
+text-align:center;
+background:white;
+transition:.35s ease;
+}
+
+.stat:hover{
+background:var(--soft);
+}
+
+.stat h2{
+font-size:54px;
+color:var(--navy);
+margin-bottom:10px;
+}
+
+.stat p{
+color:var(--gold);
+letter-spacing:2px;
+text-transform:uppercase;
+font-size:12px;
+}
+
+.cta{
+background:white;
+text-align:center;
+}
+
+.cta-box{
+max-width:850px;
+margin:auto;
+background:var(--soft);
+border:1px solid var(--border);
+padding:60px;
+transition:.35s ease;
+}
+
+.cta-box:hover{
+box-shadow:0 24px 60px rgba(18,27,63,.08);
+}
+
+.cta-box h2{
+font-size:clamp(34px,4vw,42px);
+color:var(--navy);
+margin-bottom:18px;
+line-height:1.2;
+}
+
+.cta-box p{
+color:var(--muted);
+margin-bottom:30px;
+}
+
+.btn{
+display:inline-block;
+padding:16px 34px;
+text-decoration:none;
+font-size:12px;
+letter-spacing:2px;
+text-transform:uppercase;
+transition:.35s ease;
+font-weight:600;
+background:var(--navy);
+color:white;
+}
+
+.btn:hover{
+background:var(--gold);
+transform:translateY(-3px);
+}
+
+.floating-contact{
+position:fixed;
+right:22px;
+bottom:22px;
+z-index:2000;
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.floating-contact a{
+width:54px;
+height:54px;
+border-radius:50%;
+background:var(--navy);
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+text-decoration:none;
+font-size:22px;
+box-shadow:0 12px 30px rgba(18,27,63,.25);
+transition:.35s ease;
+}
+
+.floating-contact a:hover{
+background:var(--gold);
+transform:translateY(-4px);
+}
+
+footer{
+background:var(--navy);
+color:white;
+text-align:center;
+padding:28px;
+font-size:13px;
+letter-spacing:1px;
+}
+
+@media(max-width:1100px){
+
+header{
+display:flex;
+flex-direction:column;
+gap:20px;
+padding:28px 5%;
+}
+
+.logo{
+font-size:21px;
+text-align:center;
+}
+
+nav{
+flex-wrap:wrap;
+justify-content:center;
+gap:12px;
+}
+
+nav a{
+font-size:11px;
+letter-spacing:1.5px;
+background:rgba(255,255,255,.12);
+padding:7px 10px;
+}
+
+nav a::after{
+display:none;
+}
+
+.references{
+grid-template-columns:1fr 1fr;
+}
+
+.value-grid{
+grid-template-columns:1fr 1fr;
+}
+
+.stats{
+grid-template-columns:1fr;
+}
+
+.hero{
+min-height:650px;
+}
+}
+
+@media(max-width:768px){
+
+.hero{
+height:100svh;
+min-height:580px;
+}
+
+.hero p{
+font-size:12px;
+letter-spacing:2px;
+}
+
+.references,
+.value-grid{
+grid-template-columns:1fr;
+}
+
+.quote{
+background-attachment:scroll;
+}
+
+.cta-box{
+padding:38px 24px;
+}
+
+section{
+padding:80px 6%;
+}
+
+.btn{
+width:100%;
+max-width:320px;
+text-align:center;
+}
+
+.floating-contact{
+right:15px;
+bottom:15px;
+}
+}
+
+@media(max-width:420px){
+
+.logo{
+font-size:18px;
+letter-spacing:2px;
+}
+
+nav a{
+font-size:10px;
+padding:6px 8px;
+}
+
+.reference,
+.value-card{
+padding:30px 24px;
+}
+
+.stat{
+padding:55px 20px;
+}
+
+.stat h2{
+font-size:44px;
+}
+}
+
+@media(prefers-reduced-motion:reduce){
+*{
+animation:none!important;
+transition:none!important;
+scroll-behavior:auto!important;
+}
+
+.reveal,
+.reveal-left,
+.reveal-right{
+opacity:1!important;
+transform:none!important;
+}
+}
+
+/* FINÁLNÍ RESPONSIVE A OPTIMALIZACE */
+html{
+-webkit-text-size-adjust:100%;
+text-size-adjust:100%;
+}
+
+body{
+text-rendering:optimizeLegibility;
+-webkit-font-smoothing:antialiased;
+}
+
+:focus-visible{
+outline:3px solid var(--gold-light);
+outline-offset:4px;
+}
+
+nav a,
+.btn,
+.clean-btn,
+.filter,
+.floating-contact a{
+touch-action:manipulation;
+}
+
+.property,
+.service,
+.why-card,
+.value-card,
+.reference,
+.step,
+.benefit-card{
+will-change:transform;
+}
+
+.property{
+display:flex;
+flex-direction:column;
+height:100%;
+}
+
+.property-image,
+.property > img{
+flex:0 0 auto;
+}
+
+.property-content{
+display:flex;
+flex-direction:column;
+flex:1;
+}
+
+.property-content .price,
+.property-content strong{
+margin-top:auto;
+}
+
+.property-content .btn,
+.property-content .clean-btn{
+align-self:flex-start;
+margin-top:18px;
+}
+
+.property-image img,
+.property > img,
+.hero::before,
+.about-image img{
+backface-visibility:hidden;
+}
+
+.floating-contact{
+right:max(15px,env(safe-area-inset-right));
+bottom:max(15px,env(safe-area-inset-bottom));
+}
+
+.floating-contact a{
+width:52px;
+height:52px;
+}
+
+@media(max-width:1100px){
+header{
+background:linear-gradient(rgba(18,27,63,.78),rgba(18,27,63,.18),transparent);
+}
+
+nav{
+justify-content:center;
+}
+}
+
+@media(max-width:768px){
+header{
+padding-top:calc(22px + env(safe-area-inset-top));
+}
+
+.hero h1{
+word-break:normal;
+hyphens:auto;
+}
+
+.floating-contact a{
+width:48px;
+height:48px;
+font-size:20px;
+}
+}
+
+@media(max-width:420px){
+.property h3,
+.property-content h3{
+font-size:24px;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="page-transition"></div>
+
+<header>
+
+<a href="index.html" class="logo transition-link" aria-label="Kamila Kopřivová – domů">
+Kamila <span>Kopřivová</span>
+</a>
+
+<nav aria-label="Hlavní navigace">
+<a href="index.html" class="transition-link">Domů</a>
+<a href="sluzby.html" class="transition-link">Služby</a>
+<a href="nemovitosti.html" class="transition-link">Nemovitosti</a>
+<a href="oceneni-nemovitosti.html" class="transition-link">Ocenění</a>
+<a href="reference.html" class="transition-link">Reference</a>
+<a href="index.html#kontakt">Kontakt</a>
+</nav>
+
+</header>
+
+<section class="hero">
+
+<div class="hero-content">
+
+<h1>Reference</h1>
+
+<div class="hero-line"></div>
+
+<p>Důvěra klientů je základ každé spolupráce</p>
+
+</div>
+
+</section>
+
+<section>
+
+<div class="section-label reveal">
+Reference klientů
+</div>
+
+<h2 class="section-title reveal delay-1">
+Profesionální přístup a důvěra
+</h2>
+
+<p class="section-subtitle reveal delay-2">
+Každý obchod je jedinečný. Zakládám si na osobním přístupu,
+férovosti a kvalitní prezentaci nemovitostí.
+</p>
+
+<div class="references">
+
+<div class="reference reveal delay-1">
+
+<div class="stars">★★★★★</div>
+
+<p>
+Na inzerci jsem se dívala a byla jsem z ní nadšená. Moc se Vám povedla.
+</p>
+
+<div class="client">
+<div class="avatar">DD</div>
+<div>
+<h3>Daniela D.</h3>
+<span>Inzerce bytu</span>
+</div>
+</div>
+
+</div>
+
+<div class="reference reveal delay-2">
+
+<div class="stars">★★★★★</div>
+
+<p>
+Dokonalé.
+</p>
+
+<div class="client">
+<div class="avatar">ŽH</div>
+<div>
+<h3>Žaneta H.</h3>
+<span>Inzerce bytu</span>
+</div>
+</div>
+
+</div>
+
+<div class="reference reveal delay-3">
+
+<div class="stars">★★★★★</div>
+
+<p>
+Výborná prezentace nemovitosti, profesionální fotografie a rychlé jednání.
+Doporučuji.
+</p>
+
+<div class="client">
+<div class="avatar">TH</div>
+<div>
+<h3>Tomáš H.</h3>
+<span>Pronájem domu</span>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="value">
+
+<div class="section-label reveal">
+Co klienti oceňují
+</div>
+
+<h2 class="section-title reveal delay-1">
+Spolupráce, která má jasný průběh
+</h2>
+
+<p class="section-subtitle reveal delay-2">
+Dobrá reference vzniká tehdy, když klient ví, co se děje,
+má dostatek informací a může se na celý proces spolehnout.
+</p>
+
+<div class="value-grid">
+
+<div class="value-card reveal delay-1">
+<h3>Komunikace</h3>
+<p>Pravidelné informace, jasné kroky a lidský přístup.</p>
+</div>
+
+<div class="value-card reveal delay-2">
+<h3>Prezentace</h3>
+<p>Nemovitost musí působit důvěryhodně a zaujmout na první pohled.</p>
+</div>
+
+<div class="value-card reveal delay-3">
+<h3>Férovost</h3>
+<p>Zakládám si na otevřenosti, poctivosti a oboustranné důvěře.</p>
+</div>
+
+<div class="value-card reveal delay-4">
+<h3>Jistota</h3>
+<p>Bezpečný průběh obchodu od začátku až po předání.</p>
+</div>
+
+</div>
+
+</section>
+
+<section class="quote">
+
+<h2 class="reveal">
+„Zakládám si na <span>férovosti, důvěře a kvalitní prezentaci</span> každé nemovitosti.“
+</h2>
+
+</section>
+
+<section class="stats">
+
+<div class="stat reveal delay-1">
+<h2><span class="counter" data-target="12">0</span>+</h2>
+<p>let zkušeností</p>
+</div>
+
+<div class="stat reveal delay-2">
+<h2><span class="counter" data-target="200">0</span>+</h2>
+<p>zobchodovaných nemovitostí</p>
+</div>
+
+<div class="stat reveal delay-3">
+<h2><span class="counter" data-target="100">0</span>%</h2>
+<p>profesionální přístup</p>
+</div>
+
+</section>
+
+<section class="cta">
+
+<div class="cta-box reveal">
+
+<h2>
+Chcete podobnou zkušenost?
+</h2>
+
+<p>
+Ozvěte se a společně projdeme možnosti prodeje, pronájmu nebo ocenění vaší nemovitosti.
+</p>
+
+<a href="index.html#kontakt" class="btn transition-link">
+Kontaktovat makléřku
+</a>
+
+</div>
+
+</section>
+
+<div class="floating-contact">
+<a href="tel:+420736167321" title="Zavolat" aria-label="Zavolat">☎</a>
+<a href="mailto:koprivovakamila@gmail.com" title="E-mail" aria-label="Napsat e-mail">✉</a>
+<a href="https://wa.me/420736167321" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="Otevřít WhatsApp">💬</a>
+</div>
+
+<footer>
+© 2026 Kamila Kopřivová | Realitní makléřka
+</footer>
+
+<script>
+const transitionLinks = document.querySelectorAll(".transition-link");
+const transition = document.querySelector(".page-transition");
+
+transitionLinks.forEach(link => {
+  link.addEventListener("click", e => {
+    const href = link.getAttribute("href");
+
+    if(
+      !href ||
+      href.startsWith("#") ||
+      href.startsWith("mailto") ||
+      href.startsWith("tel") ||
+      href.startsWith("https://wa.me")
+    ){
+      return;
+    }
+
+    e.preventDefault();
+
+    transition.classList.add("active");
+
+    setTimeout(() => {
+      window.location.href = href;
+    }, 650);
+  });
+});
+
+const revealElements = document.querySelectorAll(
+  ".reveal, .reveal-left, .reveal-right"
+);
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add("active");
+    }
+  });
+},{
+  threshold:.15
+});
+
+revealElements.forEach(el => {
+  observer.observe(el);
+});
+
+const counters = document.querySelectorAll(".counter");
+let counterStarted = false;
+
+function startCounters(){
+  if(counterStarted) return;
+
+  const statsSection = document.querySelector(".stats");
+  const sectionPosition = statsSection.getBoundingClientRect().top;
+  const screenPosition = window.innerHeight - 100;
+
+  if(sectionPosition < screenPosition){
+    counterStarted = true;
+
+    counters.forEach(counter => {
+      const target = Number(counter.dataset.target);
+      let current = 0;
+      const duration = 1800;
+      const increment = target / (duration / 16);
+
+      function updateCounter(){
+        current += increment;
+
+        if(current < target){
+          counter.textContent = Math.floor(current);
+          requestAnimationFrame(updateCounter);
+        } else {
+          counter.textContent = target;
+        }
+      }
+
+      updateCounter();
+    });
+  }
+}
+
+window.addEventListener("scroll", startCounters);
+window.addEventListener("load", startCounters);
+</script>
+
+</body>
+</html>
