@@ -12,6 +12,7 @@
 <meta name="author" content="Ing. Kamila Kopřivová">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#121b3f">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 
 <link rel="canonical" href="https://kamila-self.vercel.app/nemovitosti">
 
@@ -1010,8 +1011,6 @@ Kontaktovat makléřku
 <script>
 const transition = document.querySelector(".page-transition");
 const activePropertiesGrid = document.querySelector("#activePropertiesGrid");
-const rentedPropertiesGrid = document.querySelector("#rentedPropertiesGrid");
-const soldPropertiesGrid = document.querySelector("#soldPropertiesGrid");
 const realizedPropertiesGrid = document.querySelector("#realizedPropertiesGrid");
 const activeImportNote = document.querySelector("#activeImportNote");
 const soldImportNote = document.querySelector("#soldImportNote");
@@ -1402,6 +1401,9 @@ function getTimeForSorting(item){
 
   const parsed = Date.parse(primaryDate);
   if(!Number.isNaN(parsed)) return parsed;
+
+  const feedIndex = Number(item.feedIndex);
+  if(!Number.isNaN(feedIndex)) return -feedIndex;
 
   const idNumber = Number(clean(item.id).replace(/\D/g, ""));
   return Number.isNaN(idNumber) ? 0 : idNumber;

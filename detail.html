@@ -12,6 +12,7 @@
 <meta name="author" content="Ing. Kamila Kopřivová">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#121b3f">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 
 <link rel="canonical" href="https://kamila-self.vercel.app/detail">
 
@@ -994,6 +995,16 @@ function setOg(property, content){
   if(tag) tag.setAttribute("content", content);
 }
 
+function setTwitter(name, content){
+  const tag = document.querySelector(`meta[name="${name}"]`);
+  if(tag) tag.setAttribute("content", content);
+}
+
+function setCanonical(url){
+  const tag = document.querySelector('link[rel="canonical"]');
+  if(tag) tag.setAttribute("href", url);
+}
+
 function formatPrice(item){
   if(item.priceText) return clean(item.priceText);
   if(item.cenaText) return clean(item.cenaText);
@@ -1262,13 +1273,20 @@ function renderDetail(item){
   const pageTitle = title + " | Kamila Kopřivová";
   const shortDescription = description.length > 155 ? description.substring(0,155) + "..." : description;
 
+  const detailUrl = window.location.href;
+
   document.title = pageTitle;
   document.documentElement.style.setProperty("--hero-image", `url("${safeUrl(image)}")`);
 
+  setCanonical(detailUrl);
   setMeta("description", shortDescription);
   setOg("og:title", pageTitle);
   setOg("og:description", shortDescription);
+  setOg("og:url", detailUrl);
   setOg("og:image", safeUrl(image));
+  setTwitter("twitter:title", pageTitle);
+  setTwitter("twitter:description", shortDescription);
+  setTwitter("twitter:image", safeUrl(image));
 
   app.innerHTML = `
     <section class="hero">
