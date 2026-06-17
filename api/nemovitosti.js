@@ -1,7 +1,7 @@
 import { XMLParser } from "fast-xml-parser";
 
 const FALLBACK_IMAGE =
-  "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop";
+  "images/IMG_1007.png";
 
 const TYPE_KEYS = {
   "1":"domy", "2":"chaty", "3":"byty", "4":"pozemky", "5":"komercni-objekty",
@@ -287,21 +287,32 @@ function mapXmlProperty(item){
   };
 }
 
+function numericId(item){
+  return Number(String(item.id || "").replace(/\D/g, "")) || 0;
+}
+
 function sortDate(item){
-  // Hlavní řazení podle data zadání nabídky.
-  // updated nepoužíváme jako primární hodnotu, protože stará aktualizovaná nabídka
-  // by skočila nahoru (například Vernířovice).
-  return Date.parse(item.created || item.referenceDate || item.updated || "") || 0;
+  // Řazení podle data přidání, ne podle aktualizace.
+  // Poski umí po úpravě staré nabídky změnit `updated`, což by ji nesprávně vytáhlo nahoru.
+  // Realizace řadíme podle data reference; aktivní nabídky podle `created`, případně podle ID jako stabilní náhrady.
+  const primary = item.status === "sold"
+    ? (item.referenceDate || item.created)
+    : item.created;
+
+  return Date.parse(primary || "") || 0;
 }
 
 function sortProperties(items){
   return items.sort((a,b) => {
-    const byDate = sortDate(b) - sortDate(a);
-    if(byDate !== 0) return byDate;
+    const dateA = sortDate(a);
+    const dateB = sortDate(b);
 
-    const idA = Number(String(a.id || "").replace(/\D/g, "")) || 0;
-    const idB = Number(String(b.id || "").replace(/\D/g, "")) || 0;
-    return idB - idA;
+    if(dateA || dateB){
+      const byDate = dateB - dateA;
+      if(byDate !== 0) return byDate;
+    }
+
+    return numericId(b) - numericId(a);
   });
 }
 
