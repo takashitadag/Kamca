@@ -606,6 +606,16 @@ font-size:13px;
 letter-spacing:1px;
 }
 
+
+.portfolio-showcase{
+opacity:1;
+transform:none;
+}
+
+.portfolio-card{
+opacity:1!important;
+transform:none!important;
+}
 @media(max-width:1100px){
 
 header{
@@ -942,28 +952,15 @@ Prodáno a pronajato
 </h2>
 
 <p class="section-subtitle reveal delay-2">
-Realizované zakázky jsou zobrazené zvlášť pod aktuální nabídkou. Aktivní nabídky tak zůstávají čisté a realizace slouží jako ukázka zkušeností.
+Realizované zakázky jsou zobrazené jako čisté portfolio bez filtrování. Slouží jako ukázka dokončených obchodů a zkušeností.
 </p>
 
 <div class="import-note reveal delay-3" id="soldImportNote">
 <strong>Automatický import:</strong>
-Načítám realizované obchody z realitního systému.
+Načítám portfolio realizovaných obchodů z realitního systému.
 </div>
 
-<div class="filters reveal delay-4" data-filter-group="sold">
-<button class="filter active" data-filter="all">Všechny realizace</button>
-<button class="filter" data-filter="prodano">Prodané</button>
-<button class="filter" data-filter="pronajato">Pronajaté</button>
-<button class="filter" data-filter="byty">Byty</button>
-<button class="filter" data-filter="domy">Domy a vily</button>
-<button class="filter" data-filter="chaty">Chaty</button>
-<button class="filter" data-filter="pozemky">Pozemky</button>
-<button class="filter" data-filter="komercni-objekty">Komerční objekty</button>
-<button class="filter" data-filter="komercni-prostory">Komerční prostory</button>
-<button class="filter" data-filter="garaze">Garáže</button>
-</div>
-
-<div class="realization-block reveal delay-1">
+<div class="realization-block portfolio-showcase">
 <div class="realization-heading">
 <div>
 <div class="section-label">Dokončené obchody</div>
@@ -1330,15 +1327,15 @@ function getDetailUrl(item){
 
 function createPropertyCard(item, index, realized = false){
   const category = getCategory(item);
-  const delay = "delay-" + ((index % 3) + 1);
+  const delay = realized ? "active" : "reveal delay-" + ((index % 3) + 1);
   const title = getTitle(item);
   const statusLabel = getStatusLabel(item);
   const isReserved = !realized && normalize(statusLabel).includes("rezervovano");
-  const cardClass = realized ? "property sold-card" : "property";
+  const cardClass = realized ? "property sold-card portfolio-card" : "property";
   const badge = isReserved ? `<div class="property-badge reserved">Rezervováno</div>` : "";
 
   return `
-    <div class="${cardClass} reveal ${delay}" data-category="${escapeHTML(category)}" data-status-label="${escapeHTML(statusLabel)}" data-detail-url="${escapeHTML(safeUrl(getDetailUrl(item)))}" role="link" tabindex="0">
+    <div class="${cardClass} ${delay}" data-category="${escapeHTML(category)}" data-status-label="${escapeHTML(statusLabel)}" data-detail-url="${escapeHTML(safeUrl(getDetailUrl(item)))}" role="link" tabindex="0">
       <div class="property-image">
         ${badge}
         <img src="${escapeHTML(safeUrl(getImage(item)))}" alt="${escapeHTML(title)}" loading="lazy">
@@ -1438,7 +1435,7 @@ async function loadProperties(){
 
     soldImportNote.classList.add("success");
     soldImportNote.classList.remove("error");
-    soldImportNote.innerHTML = `<strong>Automatický import:</strong> Realizované obchody jsou načtené z API. Zobrazeno ${realizedItems.length} realizací.`;
+    soldImportNote.innerHTML = `<strong>Automatický import:</strong> Portfolio realizovaných obchodů je načtené z API. Zobrazeno ${realizedItems.length} realizací.`;
 
     setupFilters();
     setupReveal();
@@ -1455,7 +1452,7 @@ async function loadProperties(){
 
     soldImportNote.classList.add("error");
     soldImportNote.classList.remove("success");
-    soldImportNote.innerHTML = "<strong>Automatický import:</strong> Realizované obchody se zatím nepodařilo načíst.";
+    soldImportNote.innerHTML = "<strong>Automatický import:</strong> Portfolio realizovaných obchodů se zatím nepodařilo načíst.";
   }
 }
 
@@ -1465,7 +1462,7 @@ function matchesFilter(category, filter){
 }
 
 function setupFilters(){
-  const filterGroups = document.querySelectorAll(".filters[data-filter-group]");
+  const filterGroups = document.querySelectorAll(".filters[data-filter-group=\"active\"]");
 
   filterGroups.forEach(group => {
     const buttons = group.querySelectorAll(".filter");
