@@ -910,12 +910,19 @@ Načítám aktuální nabídky z realitního systému.
 
 <div class="filters reveal delay-4" data-filter-group="active">
 <button class="filter active" data-filter="all">Vše</button>
-<button class="filter" data-filter="byt">Byty</button>
-<button class="filter" data-filter="dum">Domy</button>
-<button class="filter" data-filter="pozemek">Pozemky</button>
-<button class="filter" data-filter="komerce">Komerční</button>
+<button class="filter" data-filter="byty">Byty</button>
+<button class="filter" data-filter="domy">Domy a vily</button>
+<button class="filter" data-filter="chaty">Chaty</button>
+<button class="filter" data-filter="pozemky">Pozemky</button>
+<button class="filter" data-filter="komercni-objekty">Komerční objekty</button>
+<button class="filter" data-filter="komercni-prostory">Komerční prostory</button>
+<button class="filter" data-filter="garaze">Garáže</button>
+<button class="filter" data-filter="najemni-domy">Nájemní domy</button>
+<button class="filter" data-filter="hotely">Hotely</button>
+<button class="filter" data-filter="zemedelske">Zemědělské</button>
 <button class="filter" data-filter="prodej">Prodej</button>
 <button class="filter" data-filter="pronajem">Pronájem</button>
+<button class="filter" data-filter="reserved">Rezervované</button>
 </div>
 
 <div class="properties" id="activePropertiesGrid">
@@ -947,10 +954,13 @@ Načítám realizované obchody z realitního systému.
 <button class="filter active" data-filter="all">Všechny realizace</button>
 <button class="filter" data-filter="prodano">Prodané</button>
 <button class="filter" data-filter="pronajato">Pronajaté</button>
-<button class="filter" data-filter="byt">Byty</button>
-<button class="filter" data-filter="dum">Domy</button>
-<button class="filter" data-filter="pozemek">Pozemky</button>
-<button class="filter" data-filter="komerce">Komerční</button>
+<button class="filter" data-filter="byty">Byty</button>
+<button class="filter" data-filter="domy">Domy a vily</button>
+<button class="filter" data-filter="chaty">Chaty</button>
+<button class="filter" data-filter="pozemky">Pozemky</button>
+<button class="filter" data-filter="komercni-objekty">Komerční objekty</button>
+<button class="filter" data-filter="komercni-prostory">Komerční prostory</button>
+<button class="filter" data-filter="garaze">Garáže</button>
 </div>
 
 <div class="realization-block reveal delay-1">
@@ -1171,11 +1181,10 @@ function getStatusLabel(item){
   const status = normalize(item.status);
   const statusText = normalize(item.statusText || item.stav || item.statusKey);
 
-  if(status.includes("reserved") || statusText.includes("rezerv") || item.reserved === true) return "Rezervováno";
-  if(price.includes("pronajato") || type.includes("pronajato") || type.includes("pronajate")) return "Pronajato";
-  if(price.includes("prodano") || type.includes("prodano") || type.includes("prodane")) return "Prodáno";
-  if(status.includes("sold")) return "Realizováno";
-
+  if(status === "reserved" || statusText.includes("rezerv") || item.reserved === true) return "Rezervováno";
+  if(status === "sold" && (type.includes("pronajato") || price.includes("pronajato"))) return "Pronajato";
+  if(status === "sold" && (type.includes("prodano") || price.includes("prodano"))) return "Prodáno";
+  if(status === "sold") return "Realizováno";
   return "Aktivní";
 }
 
@@ -1188,29 +1197,46 @@ function isSold(item){
 }
 
 function isRealized(item){
-  return clean(item.status) === "sold" || getStatusLabel(item) !== "Aktivní";
+  return normalize(item.status) === "sold";
 }
 
 function getCategory(item){
+  const typeSlug = normalize(item.typeSlug || item.estateTypeSlug);
+  const offerSlug = normalize(item.offerSlug);
   const estateType = normalize(getEstateType(item));
   const offerType = normalize(getOfferType(item));
   const statusLabel = normalize(getStatusLabel(item));
+  const status = normalize(item.status);
 
-  let category = "";
+  const categories = new Set();
 
-  if(estateType.includes("byt")) category += " byt";
-  if(estateType.includes("dum") || estateType.includes("dům") || estateType.includes("vila")) category += " dum";
-  if(estateType.includes("pozem")) category += " pozemek";
-  if(estateType.includes("komer")) category += " komerce";
+  if(typeSlug) categories.add(typeSlug);
+  if(offerSlug) categories.add(offerSlug);
 
-  if(offerType.includes("prodej")) category += " prodej";
-  if(offerType.includes("pronajem") || offerType.includes("pronájem")) category += " pronajem";
-  if(statusLabel.includes("prodano")) category += " prodano realizovano";
-  if(statusLabel.includes("pronajato")) category += " pronajato realizovano";
-  if(statusLabel.includes("realizovano")) category += " realizovano";
-  if(statusLabel.includes("rezervovano")) category += " rezervovano";
+  if(estateType.includes("byt")) categories.add("byty");
+  if(estateType.includes("dum") || estateType.includes("dům") || estateType.includes("vila")) categories.add("domy");
+  if(estateType.includes("chata") || estateType.includes("rekreac")) categories.add("chaty");
+  if(estateType.includes("pozem")) categories.add("pozemky");
+  if(estateType.includes("garaz") || estateType.includes("mal") && estateType.includes("objekt")) categories.add("garaze");
+  if(estateType.includes("najemni")) categories.add("najemni-domy");
+  if(estateType.includes("hotel") || estateType.includes("penzion")) categories.add("hotely");
+  if(estateType.includes("zemedel")) categories.add("zemedelske");
+  if(estateType.includes("komercni prostor")) categories.add("komercni-prostory");
+  if(estateType.includes("komercni objekt")) categories.add("komercni-objekty");
+  if(estateType.includes("komerc")) categories.add("komercni");
 
-  return category.trim() || "ostatni";
+  if(offerType.includes("prodej")) categories.add("prodej");
+  if(offerType.includes("pronajem") || offerType.includes("pronájem")) categories.add("pronajem");
+  if(offerType.includes("drazba")) categories.add("drazba");
+  if(offerType.includes("aukce")) categories.add("aukce");
+  if(offerType.includes("vymena")) categories.add("vymena");
+
+  if(status === "reserved" || statusLabel.includes("rezerv")) categories.add("reserved");
+  if(statusLabel.includes("prodano")) categories.add("prodano realizovano");
+  if(statusLabel.includes("pronajato")) categories.add("pronajato realizovano");
+  if(statusLabel.includes("realizovano")) categories.add("realizovano");
+
+  return Array.from(categories).join(" ") || "ostatni";
 }
 
 function getImage(item){
@@ -1370,36 +1396,49 @@ function renderGrid(grid, items, emptyText, realized = false){
   }
 
   grid.innerHTML = items.map((item,index) => createPropertyCard(item,index,realized)).join("");
+
+  requestAnimationFrame(() => {
+    grid.querySelectorAll(".property.reveal").forEach(card => {
+      const rect = card.getBoundingClientRect();
+      if(rect.top < window.innerHeight + 120){
+        card.classList.add("active");
+      }
+    });
+  });
 }
 
 async function loadProperties(){
   try{
-    const response = await fetch("/api/nemovitosti?t=" + Date.now());
+    const response = await fetch("/api/nemovitosti?t=" + Date.now(), { cache:"no-store" });
 
     if(!response.ok){
       throw new Error("API není dostupné");
     }
 
     const data = await response.json();
-    const items = getItems(data);
+    const items = getItems(data).filter(item => !item.error);
 
     if(!items.length){
       throw new Error("Žádné nabídky");
     }
 
-    const realizedItems = items.filter(item => clean(item.status) === "sold" || isRealized(item));
-    const activeItems = items.filter(item => clean(item.status) === "active" || clean(item.status) === "reserved" || !realizedItems.includes(item));
+    const activeItems = items.filter(item => {
+      const status = normalize(item.status);
+      return status === "active" || status === "reserved" || (!status && !isRealized(item));
+    });
+
+    const realizedItems = items.filter(item => normalize(item.status) === "sold");
 
     renderGrid(activePropertiesGrid, activeItems, "Aktuálně nejsou k dispozici žádné aktivní nabídky.", false);
     renderGrid(realizedPropertiesGrid, realizedItems, "Zatím nejsou dostupné žádné realizované nemovitosti.", true);
 
     activeImportNote.classList.add("success");
     activeImportNote.classList.remove("error");
-    activeImportNote.innerHTML = "<strong>Automatický import:</strong> Nabídka zobrazuje aktivní i rezervované nemovitosti z API.";
+    activeImportNote.innerHTML = `<strong>Automatický import:</strong> Aktuální nabídky jsou načtené z API. Zobrazeno ${activeItems.length} aktivních nebo rezervovaných nabídek.`;
 
     soldImportNote.classList.add("success");
     soldImportNote.classList.remove("error");
-    soldImportNote.innerHTML = "<strong>Automatický import:</strong> Realizované obchody jsou načtené z API v jednom přehledu.";
+    soldImportNote.innerHTML = `<strong>Automatický import:</strong> Realizované obchody jsou načtené z API. Zobrazeno ${realizedItems.length} realizací.`;
 
     setupFilters();
     setupReveal();
@@ -1420,14 +1459,17 @@ async function loadProperties(){
   }
 }
 
+function matchesFilter(category, filter){
+  if(filter === "all") return true;
+  return category.split(/\s+/).includes(filter);
+}
+
 function setupFilters(){
   const filterGroups = document.querySelectorAll(".filters[data-filter-group]");
 
   filterGroups.forEach(group => {
     const buttons = group.querySelectorAll(".filter");
-    const groupName = group.getAttribute("data-filter-group");
     const section = group.closest("section");
-    const properties = section.querySelectorAll(".property[data-category]");
 
     buttons.forEach(button => {
       button.onclick = () => {
@@ -1435,19 +1477,19 @@ function setupFilters(){
         button.classList.add("active");
 
         const filter = button.getAttribute("data-filter");
+        const properties = section.querySelectorAll(".property[data-category]");
 
         properties.forEach(property => {
-          const category = property.getAttribute("data-category");
+          const category = normalize(property.getAttribute("data-category"));
 
-          if(filter === "all" || category.includes(filter)){
+          if(matchesFilter(category, filter)){
             property.style.display = "block";
-
-            setTimeout(() => {
+            requestAnimationFrame(() => {
               property.classList.remove("is-hidden");
-            },20);
+              property.classList.add("active");
+            });
           } else {
             property.classList.add("is-hidden");
-
             setTimeout(() => {
               property.style.display = "none";
             },250);

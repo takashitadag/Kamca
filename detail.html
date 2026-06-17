@@ -1132,7 +1132,7 @@ function buildParameterGroups(item, location, type, estateType){
       paramRow("Kategorie", property.kategorie || estateType),
       paramRow("Dispozice", property.dispozice),
       paramRow("Vlastnictví", property.vlastnictvi),
-      paramRow("Stav", property.stavBytu),
+      paramRow("Stav", property.stavBytu || property.stav),
       paramRow("Odpad", property.odpad),
       paramRow("Plyn", property.plyn),
       paramRow("Voda", property.voda),
