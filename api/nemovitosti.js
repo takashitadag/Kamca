@@ -229,7 +229,7 @@ function getReferencePrice(item){
   const price = clean(ref?.cena);
   const n = numberValue(price);
   if(n !== null && n > 0) return n.toLocaleString("cs-CZ") + " Kč";
-  return getReferenceType(item) || "Realizováno";
+  return getCompletionType(item) || "Realizováno";
 }
 
 function getParameters(item){
@@ -260,23 +260,44 @@ function getParameters(item){
   };
 }
 
-function mapXmlProperty(item){
+function getCompletionType(item){
+  const referenceType = getReferenceType(item);
+  if(referenceType) return referenceType;
+
+  const offerSlug = getOfferSlug(item);
+  const offerText = normalize(item.typ_nabidky);
+
+  if(offerSlug === "pronajem" || offerText.includes("pronajem")) return "Pronajato";
+  if(offerSlug === "prodej" || offerText.includes("prodej")) return "Prodáno";
+
+  return "Realizováno";
+}
+
+function getDisplayType(item, status){
+  return status === "sold" ? getCompletionType(item) : codebook(item.typ_nabidky);
+}
+
+function getDisplayPrice(item, status){
+  return status === "sold" ? getReferencePrice(item) : formatPrice(item.cena);
+}
+
+function mapXmlProperty(item, feedIndex = 0){
   const a = item.adresa || {};
-  const c = item.cena || {};
   const ref = getReference(item) || {};
   const status = getStatus(item);
-  const referenceType = getReferenceType(item);
+  const referenceType = getCompletionType(item);
   const gallery = getPhotos(item);
   const typeSlug = getTypeSlug(item);
   const offerSlug = getOfferSlug(item);
   return {
     id: clean(item.id_nabidka || item.cislo_nabidky), status,
+    feedIndex,
     externalUrl: clean(item.url),
     title: getTitle(item), description: getDescription(item), longDescription: getDescription(item),
-    price: status === "sold" ? getReferencePrice(item) : formatPrice(c),
+    price: getDisplayPrice(item, status),
     city: clean(a.obec_nazev), street: clean(a.ulice_nazev), district: clean(a.okres_nazev), region: clean(a.kraj_nazev),
     estateType: codebook(item.typ_nemovitosti), estateTypeKey: key(item.typ_nemovitosti), typeSlug,
-    type: status === "sold" ? referenceType || "Realizováno" : codebook(item.typ_nabidky), offerTypeKey: key(item.typ_nabidky), offerSlug,
+    type: getDisplayType(item, status), offerTypeKey: key(item.typ_nabidky), offerSlug,
     usableArea: formatArea(item.usable_area || item.floor_area || item.total_area), plotArea: formatArea(item.plot_area),
     floor: clean(item.floor_number) || "—", condition: codebook(item.building_condition) || "—", energyClass: codebook(item.energy_efficiency_rating) || "—",
     updated: clean(item.updated), created: clean(item.created), referenceDate: clean(ref.datum_vlozeni), readyDate: formatDate(item.ready_date),
@@ -312,6 +333,9 @@ function sortProperties(items){
       if(byDate !== 0) return byDate;
     }
 
+    const feedFallback = (a.feedIndex ?? 0) - (b.feedIndex ?? 0);
+    if(feedFallback !== 0) return feedFallback;
+
     return numericId(b) - numericId(a);
   });
 }
@@ -327,6 +351,20 @@ function filterByStatus(items, status){
   return items.filter(i => [i.status, i.typeSlug, i.offerSlug].map(normalize).includes(s));
 }
 
+function buildFeedUrl(rawUrl){
+  const url = new URL(rawUrl);
+
+  if(!url.searchParams.has("orderby")){
+    url.searchParams.set("orderby", "new");
+  }
+
+  if(!url.searchParams.has("sort")){
+    url.searchParams.set("sort", "DESC");
+  }
+
+  return url.toString();
+}
+
 export default async function handler(req, res){
   res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
   res.setHeader("Pragma", "no-cache");
@@ -340,7 +378,7 @@ export default async function handler(req, res){
       return res.status(500).json({ error: true, message: "Chybí POSKI_XML_URL ve Vercelu." });
     }
 
-    const response = await fetch(FEED_URL, { headers: { "User-Agent": "KamilaKoprivovaWebsite/1.0" } });
+    const response = await fetch(buildFeedUrl(FEED_URL), { headers: { "User-Agent": "KamilaKoprivovaWebsite/1.0" } });
     if(!response.ok) throw new Error(`Feed vrátil status ${response.status}`);
 
     const xml = await response.text();
@@ -351,7 +389,7 @@ export default async function handler(req, res){
       return res.status(500).json({ error: true, source: "poski", message: "Poski export vrátil chybu.", details: errors.map(clean) });
     }
 
-    let properties = toArray(data?.export?.nabidky?.nabidka).map(mapXmlProperty).filter(item => item.id && item.title);
+    let properties = toArray(data?.export?.nabidky?.nabidka).map((item, index) => mapXmlProperty(item, index)).filter(item => item.id && item.title);
     properties = sortProperties(properties);
 
     if(id){
