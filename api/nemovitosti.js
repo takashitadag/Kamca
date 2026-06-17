@@ -18,12 +18,23 @@ function toArray(value){
 
 function clean(value){
   if(value === undefined || value === null) return "";
+
   if(typeof value === "object"){
     if(value["#text"] !== undefined) return String(value["#text"]).trim();
     if(value.text !== undefined) return String(value.text).trim();
     if(value._text !== undefined) return String(value._text).trim();
     if(value["#cdata"] !== undefined) return String(value["#cdata"]).trim();
+
+    // Některé Poski číselníky mohou přijít jen jako atribut klic bez textové hodnoty.
+    // Nevracíme "[object Object]", protože to rozbíjí statusy, reference i filtry.
+    if(value.klic !== undefined) return String(value.klic).trim();
+    if(value["@_klic"] !== undefined) return String(value["@_klic"]).trim();
+    if(value.key !== undefined) return String(value.key).trim();
+    if(value.value !== undefined) return String(value.value).trim();
+
+    return "";
   }
+
   return String(value).trim();
 }
 
@@ -43,6 +54,12 @@ function normalize(value){
 }
 
 function codebook(value){
+  if(value === undefined || value === null) return "";
+
+  if(typeof value === "object"){
+    return clean(value["#text"] ?? value.text ?? value._text ?? value["#cdata"] ?? value.klic ?? value["@_klic"] ?? value.key ?? value.value);
+  }
+
   return clean(value);
 }
 
@@ -126,14 +143,29 @@ function getReference(item){
 function getReferenceType(item){
   const ref = getReference(item);
   if(!ref) return "";
-  const t = normalize(clean(ref.typ) || key(ref.typ));
+
+  const rawType = clean(ref.typ || ref.type) || key(ref.typ || ref.type);
+  const t = normalize(rawType);
+
   if(t.includes("pronajate") || t.includes("pronajat")) return "Pronajato";
   if(t.includes("prodane") || t.includes("prodan")) return "Prodáno";
+
   return "";
 }
 
 function hasSoldReference(item){
-  return Boolean(getReferenceType(item));
+  const ref = getReference(item);
+  if(!ref) return false;
+
+  if(getReferenceType(item)) return true;
+
+  // Reference bez typu bereme jen tehdy, když skutečně obsahuje portfolio data.
+  return Boolean(
+    clean(ref.nadpis) ||
+    clean(ref.popis) ||
+    clean(ref.cena) ||
+    clean(ref.datum_vlozeni)
+  );
 }
 
 function getStatus(item){
@@ -231,6 +263,7 @@ function getParameters(item){
 function mapXmlProperty(item){
   const a = item.adresa || {};
   const c = item.cena || {};
+  const ref = getReference(item) || {};
   const status = getStatus(item);
   const referenceType = getReferenceType(item);
   const gallery = getPhotos(item);
@@ -246,7 +279,7 @@ function mapXmlProperty(item){
     type: status === "sold" ? referenceType || "Realizováno" : codebook(item.typ_nabidky), offerTypeKey: key(item.typ_nabidky), offerSlug,
     usableArea: formatArea(item.usable_area || item.floor_area || item.total_area), plotArea: formatArea(item.plot_area),
     floor: clean(item.floor_number) || "—", condition: codebook(item.building_condition) || "—", energyClass: codebook(item.energy_efficiency_rating) || "—",
-    updated: clean(item.updated), created: clean(item.created), readyDate: formatDate(item.ready_date),
+    updated: clean(item.updated), created: clean(item.created), referenceDate: clean(ref.datum_vlozeni), readyDate: formatDate(item.ready_date),
     statusText: codebook(item.stav) || STATUS_KEYS[key(item.stav)] || status, statusKey: key(item.stav), reserved: status === "reserved", referenceType,
     parameters: getParameters(item), gpsLat: clean(a.gps_lat), gpsLng: clean(a.gps_lng),
     matterportUrl: clean(item.matterport_url), videoYoutube: clean(item.video_youtube),
@@ -254,8 +287,22 @@ function mapXmlProperty(item){
   };
 }
 
+function sortDate(item){
+  // Hlavní řazení podle data zadání nabídky.
+  // updated nepoužíváme jako primární hodnotu, protože stará aktualizovaná nabídka
+  // by skočila nahoru (například Vernířovice).
+  return Date.parse(item.created || item.referenceDate || item.updated || "") || 0;
+}
+
 function sortProperties(items){
-  return items.sort((a,b) => (Date.parse(b.updated || b.created || "") || 0) - (Date.parse(a.updated || a.created || "") || 0));
+  return items.sort((a,b) => {
+    const byDate = sortDate(b) - sortDate(a);
+    if(byDate !== 0) return byDate;
+
+    const idA = Number(String(a.id || "").replace(/\D/g, "")) || 0;
+    const idB = Number(String(b.id || "").replace(/\D/g, "")) || 0;
+    return idB - idA;
+  });
 }
 
 function filterByStatus(items, status){
