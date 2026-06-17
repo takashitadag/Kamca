@@ -1,22 +1,28 @@
-# Kamila Kopřivová – realitní web
+# Kamila Kopřivová – web
 
-Projekt je připravený pro Vercel a XML export z Reality Proradost / Poski.
+Finální upravená verze webu s napojením na Poski XML export.
 
-## Nastavení exportu na Vercelu
+## Úpravy v této verzi
 
-Vercel → Project → Settings → Environment Variables:
+- opravené oddělení aktivních, rezervovaných a realizovaných nabídek,
+- realizované obchody jsou součástí stránky `nemovitosti.html`, samostatná stránka realizací není potřeba,
+- řazení nabídek je podle data přidání (`created`), ne podle data poslední aktualizace,
+- SVG ikony místo emoji,
+- odstraněné načítání Google Fonts kvůli minimalizaci externích požadavků,
+- přidaná stránka `gdpr.html`,
+- připravený formulář ocenění přes `/api/oceneni` s možností napojení na Formspree přes proměnnou `FORMSPREE_ENDPOINT`,
+- lokální fallback obrázky bez externího Unsplash načítání.
 
-```txt
-POSKI_XML_URL=https://www.reality-proradost.cz/poskireal/export/xml/GetAll.php?id=...&only_uzivatel=...&pwdhash=...
+## Vercel env
+
+Povinné:
+
+```
+POSKI_XML_URL=https://...
 ```
 
-Po uložení proměnné spusť nový deploy.
+Volitelné pro formulář ocenění:
 
-## Důležité
-
-- URL XML exportu nedávej přímo do HTML ani do veřejného JavaScriptu.
-- Aktivní nabídky se načítají přes `/api/nemovitosti?status=active`.
-- Realizované obchody se načítají přes `/api/nemovitosti?status=sold`.
-- Detail nabídky se načítá přes `/api/nemovitosti?id=ID_NABIDKY`.
-- Obrázky z Poski se používají přímo z XML exportu.
-
+```
+FORMSPREE_ENDPOINT=https://formspree.io/f/...
+```

@@ -27,12 +27,12 @@
 <meta name="twitter:description" content="Nezávazné ocenění nemovitosti v Olomouckém kraji.">
 <meta name="twitter:image" content="https://kamila-self.vercel.app/images/IMG_1011.png">
 
-<link rel="preload" as="image" href="images/IMG_1011.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
 
+<link rel="preload" as="image" href="images/IMG_1011.png">
 <style>
 :root{
 --white:#ffffff;
@@ -57,7 +57,7 @@ scroll-behavior:smooth;
 }
 
 body{
-font-family:"Montserrat",sans-serif;
+font-family:"Montserrat",Arial,Helvetica,sans-serif;
 background:white;
 color:var(--text);
 line-height:1.7;
@@ -67,7 +67,7 @@ animation:pageLoad .8s ease forwards;
 }
 
 h1,h2,h3{
-font-family:"Playfair Display",serif;
+font-family:"Playfair Display",Georgia,"Times New Roman",serif;
 font-weight:400;
 }
 
@@ -436,7 +436,7 @@ textarea{
 width:100%;
 padding:16px 15px;
 border:1px solid var(--border);
-font-family:"Montserrat",sans-serif;
+font-family:"Montserrat",Arial,Helvetica,sans-serif;
 font-size:14px;
 outline:none;
 transition:.3s ease;
@@ -454,6 +454,10 @@ textarea{
 min-height:130px;
 resize:vertical;
 }
+
+.form-status{font-size:13px;color:var(--navy);font-weight:600;min-height:22px;}
+.form-status.error{color:#8a1f1f;}
+.form-status.success{color:#1f6b3a;}
 
 .form-note{
 font-size:12px;
@@ -593,6 +597,8 @@ flex-direction:column;
 gap:12px;
 }
 
+.floating-contact .icon{width:24px;height:24px;display:block;}
+
 .floating-contact a{
 width:54px;
 height:54px;
@@ -621,6 +627,10 @@ padding:28px;
 font-size:13px;
 letter-spacing:1px;
 }
+
+.footer-link{color:var(--gold-light);text-decoration:none;font-size:12px;letter-spacing:1px;}
+.footer-link:hover{color:white;}
+
 
 @media(max-width:1100px){
 
@@ -965,17 +975,17 @@ která bude odpovídat aktuální situaci a potenciálu nemovitosti.
 Vyplňte základní informace a ozvu se vám zpět.
 </p>
 
-<form action="mailto:koprivovakamila@gmail.com" method="post" enctype="text/plain">
+<form id="valuationForm" action="/api/oceneni" method="post">
 
 <div class="form-row">
-<input type="text" name="Jméno" placeholder="Jméno a příjmení" autocomplete="name" required>
-<input type="tel" name="Telefon" placeholder="Telefon" autocomplete="tel" required>
+<input type="text" name="name" placeholder="Jméno a příjmení" autocomplete="name" required>
+<input type="tel" name="phone" placeholder="Telefon" autocomplete="tel" required>
 </div>
 
-<input type="email" name="E-mail" placeholder="E-mail" autocomplete="email" required>
+<input type="email" name="email" placeholder="E-mail" autocomplete="email" required>
 
 <div class="form-row">
-<select name="Typ nemovitosti" required>
+<select name="propertyType" required>
 <option value="">Typ nemovitosti</option>
 <option>Byt</option>
 <option>Dům</option>
@@ -983,7 +993,7 @@ Vyplňte základní informace a ozvu se vám zpět.
 <option>Komerční prostor</option>
 </select>
 
-<select name="Záměr" required>
+<select name="intent" required>
 <option value="">Záměr</option>
 <option>Prodej</option>
 <option>Pronájem</option>
@@ -991,18 +1001,19 @@ Vyplňte základní informace a ozvu se vám zpět.
 </select>
 </div>
 
-<input type="text" name="Lokalita" placeholder="Lokalita" autocomplete="address-level2" required>
+<input type="text" name="location" placeholder="Lokalita" autocomplete="address-level2" required>
 
-<textarea name="Zpráva" placeholder="Krátký popis nemovitosti"></textarea>
+<textarea name="message" placeholder="Krátký popis nemovitosti"></textarea>
 
 <p class="form-note">
-Odesláním se otevře e-mailový klient s předvyplněnou zprávou. Později lze formulář napojit přes Formspree nebo backend.
+Odesláním souhlasíte se zpracováním údajů pro vyřízení poptávky. Podrobnosti najdete v sekci Ochrana osobních údajů.
 </p>
 
 <button type="submit" class="submit-btn">
 Odeslat poptávku
 </button>
 
+<p class="form-status" id="formStatus" aria-live="polite"></p>
 </form>
 
 </div>
@@ -1075,13 +1086,14 @@ Zavolat
 </section>
 
 <div class="floating-contact">
-<a href="tel:+420736167321" title="Zavolat" aria-label="Zavolat">☎</a>
-<a href="mailto:koprivovakamila@gmail.com" title="E-mail" aria-label="Napsat e-mail">✉</a>
-<a href="https://wa.me/420736167321" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="Otevřít WhatsApp">💬</a>
+<a href="tel:+420736167321" title="Zavolat" aria-label="Zavolat"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.5 3 3.9 5.4 6.6 6.6l2.2-2.2c.3-.3.8-.4 1.2-.3 1.3.4 2.7.6 4.1.6.7 0 1.3.6 1.3 1.3v3.5c0 .7-.6 1.3-1.3 1.3C10.4 21.6 2.4 13.6 2.4 3.3 2.4 2.6 3 2 3.7 2h3.5c.7 0 1.3.6 1.3 1.3 0 1.4.2 2.8.6 4.1.1.4 0 .9-.3 1.2l-2.2 2.2Z" fill="currentColor"/></svg></a>
+<a href="mailto:koprivovakamila@gmail.com" title="E-mail" aria-label="Napsat e-mail"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5h17c.8 0 1.5.7 1.5 1.5v11c0 .8-.7 1.5-1.5 1.5h-17c-.8 0-1.5-.7-1.5-1.5v-11C2 5.7 2.7 5 3.5 5Zm.9 2 7.6 5.2L19.6 7H4.4Zm15.6 9.6V8.9l-7.2 4.9c-.5.3-1.1.3-1.6 0L4 8.9v7.7h16Z" fill="currentColor"/></svg></a>
+<a href="https://wa.me/420736167321" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="Otevřít WhatsApp"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.3A9.5 9.5 0 0 0 3.8 16.6L2.7 21.7l5.2-1.3A9.5 9.5 0 1 0 12 2.3Zm0 17.3c-1.4 0-2.7-.4-3.8-1l-.3-.2-3 .8.8-2.9-.2-.3A7.7 7.7 0 1 1 12 19.6Zm4.3-5.8c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.9.9-.9 2.2s.9 2.5 1 2.6c.1.2 1.8 2.8 4.4 3.9.6.3 1.1.4 1.5.5.6.2 1.2.1 1.6.1.5-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.3-.2-.5-.3Z" fill="currentColor"/></svg></a>
 </div>
 
 <footer>
-© 2026 Kamila Kopřivová | Realitní makléřka
+© 2026 Kamila Kopřivová | Realitní makléřka<br>
+<a href="gdpr.html" class="footer-link transition-link">Ochrana osobních údajů</a>
 </footer>
 
 <script>
@@ -1128,6 +1140,61 @@ const observer = new IntersectionObserver(entries => {
 revealElements.forEach(el => {
   observer.observe(el);
 });
+
+const valuationForm = document.querySelector("#valuationForm");
+const formStatus = document.querySelector("#formStatus");
+
+function buildMailto(data){
+  const subject = encodeURIComponent("Poptávka ocenění nemovitosti");
+  const body = encodeURIComponent(
+    `Dobrý den,\n\nprosím o nezávazné ocenění nemovitosti.\n\nJméno: ${data.name}\nTelefon: ${data.phone}\nE-mail: ${data.email}\nTyp nemovitosti: ${data.propertyType}\nZáměr: ${data.intent}\nLokalita: ${data.location}\nZpráva: ${data.message || ""}\n\nDěkuji.`
+  );
+  return `mailto:koprivovakamila@gmail.com?subject=${subject}&body=${body}`;
+}
+
+if(valuationForm){
+  valuationForm.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const submitButton = valuationForm.querySelector("button[type='submit']");
+    const data = Object.fromEntries(new FormData(valuationForm).entries());
+
+    formStatus.textContent = "Odesílám poptávku...";
+    formStatus.className = "form-status";
+    submitButton.disabled = true;
+
+    try{
+      const response = await fetch("/api/oceneni", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if(!response.ok || result.error){
+        throw new Error(result.message || "Formulář se nepodařilo odeslat.");
+      }
+
+      if(result.fallback){
+        formStatus.textContent = "Připravuji e-mail s poptávkou...";
+        window.location.href = buildMailto(data);
+      } else {
+        formStatus.textContent = "Poptávka byla úspěšně odeslána.";
+        valuationForm.reset();
+      }
+
+      formStatus.classList.add("success");
+    }catch(error){
+      formStatus.textContent = "Odeslání selhalo. Otevřu e-mail s předvyplněnou zprávou.";
+      formStatus.classList.add("error");
+      window.location.href = buildMailto(data);
+    }finally{
+      submitButton.disabled = false;
+    }
+  });
+}
+
 </script>
 
 </body>

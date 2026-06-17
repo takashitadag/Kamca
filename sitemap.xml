@@ -27,4 +27,9 @@
 <priority>0.7</priority>
 </url>
 
+<url>
+<loc>https://kamila-self.vercel.app/gdpr</loc>
+<priority>0.4</priority>
+</url>
+
 </urlset>
