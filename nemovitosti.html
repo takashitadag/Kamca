@@ -1327,7 +1327,7 @@ function getDetailUrl(item){
 
 function createPropertyCard(item, index, realized = false){
   const category = getCategory(item);
-  const delay = realized ? "active" : "reveal delay-" + ((index % 3) + 1);
+  const delay = "reveal delay-" + ((index % 3) + 1);
   const title = getTitle(item);
   const statusLabel = getStatusLabel(item);
   const isReserved = !realized && normalize(statusLabel).includes("rezervovano");
@@ -1386,6 +1386,24 @@ function renderEmpty(grid, text){
   grid.innerHTML = `<div class="empty-section">${escapeHTML(text)}</div>`;
 }
 
+function getTimeForSorting(item){
+  const created = Date.parse(clean(item.created));
+  if(!Number.isNaN(created)) return created;
+
+  const referenceDate = Date.parse(clean(item.referenceDate));
+  if(!Number.isNaN(referenceDate)) return referenceDate;
+
+  const updated = Date.parse(clean(item.updated));
+  if(!Number.isNaN(updated)) return updated;
+
+  const idNumber = Number(clean(item.id).replace(/\D/g, ""));
+  return Number.isNaN(idNumber) ? 0 : idNumber;
+}
+
+function sortByCreated(items){
+  return items.sort((a,b) => getTimeForSorting(b) - getTimeForSorting(a));
+}
+
 function renderGrid(grid, items, emptyText, realized = false){
   if(!items.length){
     renderEmpty(grid, emptyText);
@@ -1425,6 +1443,9 @@ async function loadProperties(){
     });
 
     const realizedItems = items.filter(item => normalize(item.status) === "sold");
+
+    sortByCreated(activeItems);
+    sortByCreated(realizedItems);
 
     renderGrid(activePropertiesGrid, activeItems, "Aktuálně nejsou k dispozici žádné aktivní nabídky.", false);
     renderGrid(realizedPropertiesGrid, realizedItems, "Zatím nejsou dostupné žádné realizované nemovitosti.", true);
