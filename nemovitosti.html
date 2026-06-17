@@ -996,6 +996,8 @@ Kontaktovat makléřku
 <script>
 const transition = document.querySelector(".page-transition");
 const activePropertiesGrid = document.querySelector("#activePropertiesGrid");
+const rentedPropertiesGrid = document.querySelector("#rentedPropertiesGrid");
+const soldPropertiesGrid = document.querySelector("#soldPropertiesGrid");
 const realizedPropertiesGrid = document.querySelector("#realizedPropertiesGrid");
 const activeImportNote = document.querySelector("#activeImportNote");
 const soldImportNote = document.querySelector("#soldImportNote");
@@ -1186,15 +1188,7 @@ function isSold(item){
 }
 
 function isRealized(item){
-  const status = normalize(item.status);
-  const label = normalize(getStatusLabel(item));
-
-  return (
-    status === "sold" ||
-    label.includes("prodano") ||
-    label.includes("pronajato") ||
-    label.includes("realizovano")
-  );
+  return clean(item.status) === "sold" || getStatusLabel(item) !== "Aktivní";
 }
 
 function getCategory(item){
@@ -1393,8 +1387,8 @@ async function loadProperties(){
       throw new Error("Žádné nabídky");
     }
 
-    const realizedItems = items.filter(item => isRealized(item));
-    const activeItems = items.filter(item => !isRealized(item));
+    const realizedItems = items.filter(item => clean(item.status) === "sold" || isRealized(item));
+    const activeItems = items.filter(item => clean(item.status) === "active" || clean(item.status) === "reserved" || !realizedItems.includes(item));
 
     renderGrid(activePropertiesGrid, activeItems, "Aktuálně nejsou k dispozici žádné aktivní nabídky.", false);
     renderGrid(realizedPropertiesGrid, realizedItems, "Zatím nejsou dostupné žádné realizované nemovitosti.", true);
