@@ -30,16 +30,42 @@ function getEnv(){
   return { url, key, password };
 }
 
+function getHeader(req, name){
+  const wanted = String(name || "").toLowerCase();
+  const headers = req.headers || {};
+
+  for(const key of Object.keys(headers)){
+    if(String(key).toLowerCase() === wanted){
+      return headers[key];
+    }
+  }
+
+  return "";
+}
+
+function normalizePassword(value){
+  return String(value ?? "")
+    .replace(/^\uFEFF/, "")
+    .trim();
+}
+
 function isAuthorized(req, adminPassword){
-  if(!adminPassword) return false;
+  const expected = normalizePassword(adminPassword);
+  if(!expected) return false;
 
-  const headerPassword = req.headers["x-admin-password"];
-  if(headerPassword && String(headerPassword) === String(adminPassword)) return true;
+  const headerPassword = normalizePassword(getHeader(req, "x-admin-password"));
+  if(headerPassword && headerPassword === expected) return true;
 
-  const bodyPassword = getBody(req)?.password;
-  if(bodyPassword && String(bodyPassword) === String(adminPassword)) return true;
+  const bodyPassword = normalizePassword(getBody(req)?.password);
+  if(bodyPassword && bodyPassword === expected) return true;
 
   return false;
+}
+
+function hasAdminAttempt(req){
+  const headerPassword = normalizePassword(getHeader(req, "x-admin-password"));
+  const queryAdmin = String(req.query?.admin || "").trim() === "1";
+  return Boolean(headerPassword || queryAdmin);
 }
 
 function sanitizeText(value, max = 3000){
@@ -125,7 +151,15 @@ export default async function handler(req, res){
     const { password } = getEnv();
 
     if(req.method === "GET"){
+      const adminAttempt = hasAdminAttempt(req);
       const admin = isAuthorized(req, password);
+
+      // Veřejný web může reference načítat bez hesla.
+      // Administrace ale musí při špatném hesle skončit 401, jinak by pustila dovnitř s veřejnými daty.
+      if(adminAttempt && !admin){
+        return json(res, 401, { ok: false, message: "Neplatné heslo." });
+      }
+
       const query = admin
         ? "references?select=id,name,location,category,review,visible,created_at&order=created_at.desc.nullslast,id.desc"
         : "references?select=id,name,location,category,review,visible,created_at&visible=eq.true&order=created_at.desc.nullslast,id.desc";
