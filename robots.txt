@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kamila-self.vercel.app/sitemap.xml
+Sitemap: https://kamilakoprivova.vercel.app/sitemap.xml
