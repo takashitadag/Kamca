@@ -950,8 +950,8 @@ Aktivní nemovitosti jsou oddělené od realizovaných obchodů, aby se nabídky
 </p>
 
 <div class="import-note reveal delay-3" id="activeImportNote">
-<strong>Automatický import:</strong>
-Načítám aktuální nabídky z realitního systému.
+<strong>Aktuální nabídka:</strong>
+Nemovitosti jsou pravidelně aktualizované podle aktuální nabídky makléřky.
 </div>
 
 <div class="filters reveal delay-4" data-filter-group="active">
@@ -992,8 +992,8 @@ Realizované zakázky jsou zobrazené jako čisté portfolio bez filtrování. S
 </p>
 
 <div class="import-note reveal delay-3" id="soldImportNote">
-<strong>Automatický import:</strong>
-Načítám portfolio realizovaných obchodů z realitního systému.
+<strong>Portfolio realizací:</strong>
+Ukázka vybraných dokončených obchodů a zkušeností z praxe.
 </div>
 
 <div class="realization-block portfolio-showcase">
@@ -1467,7 +1467,7 @@ async function loadProperties(){
     const response = await fetch("/api/nemovitosti?t=" + Date.now(), { cache:"no-store" });
 
     if(!response.ok){
-      throw new Error("API není dostupné");
+      throw new Error("Datový zdroj není dostupný");
     }
 
     const data = await response.json();
@@ -1492,11 +1492,11 @@ async function loadProperties(){
 
     activeImportNote.classList.add("success");
     activeImportNote.classList.remove("error");
-    activeImportNote.innerHTML = `<strong>Automatický import:</strong> Aktuální nabídky jsou načtené z API. Zobrazeno ${activeItems.length} aktivních nebo rezervovaných nabídek.`;
+    activeImportNote.innerHTML = `<strong>Aktuální nabídka:</strong> Zobrazeno ${activeItems.length} aktivních nebo rezervovaných nabídek.`;
 
     soldImportNote.classList.add("success");
     soldImportNote.classList.remove("error");
-    soldImportNote.innerHTML = `<strong>Automatický import:</strong> Portfolio realizovaných obchodů je načtené z API. Zobrazeno ${realizedItems.length} realizací.`;
+    soldImportNote.innerHTML = `<strong>Portfolio realizací:</strong> Zobrazeno ${realizedItems.length} dokončených obchodů.`;
 
     setupFilters();
     setupReveal();
@@ -1504,16 +1504,16 @@ async function loadProperties(){
     setupPropertyCards();
 
   }catch(error){
-    renderEmpty(activePropertiesGrid, "Aktuální nabídky se nepodařilo načíst. Zkontrolujte API nebo XML feed.");
-    renderEmpty(realizedPropertiesGrid, "Realizace se nepodařilo načíst.");
+    renderEmpty(activePropertiesGrid, "Aktuální nabídky momentálně nejsou dostupné. Zkuste stránku obnovit později.");
+    renderEmpty(realizedPropertiesGrid, "Portfolio realizací momentálně není dostupné.");
 
     activeImportNote.classList.add("error");
     activeImportNote.classList.remove("success");
-    activeImportNote.innerHTML = "<strong>Automatický import:</strong> Aktivní nabídky se zatím nepodařilo načíst.";
+    activeImportNote.innerHTML = "<strong>Aktuální nabídka:</strong> Data se momentálně nenačetla. Zkuste stránku obnovit později.";
 
     soldImportNote.classList.add("error");
     soldImportNote.classList.remove("success");
-    soldImportNote.innerHTML = "<strong>Automatický import:</strong> Portfolio realizovaných obchodů se zatím nepodařilo načíst.";
+    soldImportNote.innerHTML = "<strong>Portfolio realizací:</strong> Data se momentálně nenačetla. Zkuste stránku obnovit později.";
   }
 }
 

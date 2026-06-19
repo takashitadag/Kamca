@@ -1,0 +1,15 @@
+Kontrola požadavků paní Kopřivové – 19. 6.
+
+Hotovo v této verzi:
+1) Odstraněny veřejné technické texty typu „Automatický import“, „API“, „XML feed“ z uživatelské části nemovitostí.
+2) Patička obsahuje jméno, IČO, sídlo i příslušný živnostenský úřad.
+3) V patičce je odkaz na „Ochrana osobních údajů a právní informace“.
+4) Právní stránka obsahuje GDPR, AML upozornění a ČOI doložku s proklikávacími odkazy.
+5) Formuláře obsahují informační větu o zpracování osobních údajů s odkazem na právní stránku.
+6) Reference jsou upravené bezpečněji: zkrácená jména, doplněný kontext a odstraněna ukázková/fake reference.
+7) SEO základ zůstává: robots.txt, sitemap.xml, canonical odkazy, Open Graph a Schema.org.
+
+Zbývá doplnit později:
+- Nový právní odstavec, který paní Kopřivová teprve pošle.
+- Případné skutečné nové reference od klientů.
+- Automatické Google/Facebook recenze lze řešit až po dodání odkazů na profily a ideálně přes oficiální widget/API nebo ručně vložené odkazy na profily.

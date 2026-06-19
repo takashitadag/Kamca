@@ -1293,7 +1293,7 @@ async function loadHomeProperties(){
     const response = await fetch("/api/nemovitosti?status=active&t=" + Date.now());
 
     if(!response.ok){
-      throw new Error("API není dostupné");
+      throw new Error("Datový zdroj není dostupný");
     }
 
     const data = await response.json();
@@ -1314,7 +1314,7 @@ async function loadHomeProperties(){
   }catch(error){
     grid.innerHTML = `
       <div class="loading-properties">
-        Nabídky se zatím nepodařilo načíst. Zobrazit je můžete v sekci Nemovitosti.
+        Aktuální nabídky momentálně nejsou dostupné. Zobrazit je můžete v sekci Nemovitosti.
       </div>
     `;
   }
