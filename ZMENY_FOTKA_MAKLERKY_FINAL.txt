@@ -1,0 +1,4 @@
+Upraveno 19. 6.
+- Sekce O makléřce používá images/maklerka-uvod.webp.
+- Zrušen posunutý výřez 38 %, který řezal obličej a postavu.
+- Nastaveno object-position: center center a vypnut hover zoom, aby se fotka znovu neořezávala.

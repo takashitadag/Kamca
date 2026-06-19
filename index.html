@@ -384,12 +384,12 @@ background:var(--soft);
 width:100%;
 height:100%;
 object-fit:cover;
-object-position:38% center;
-transition:1s ease;
+object-position:center center;
+transition:.6s ease;
 background:#fff;
 }
 
-.about-image:hover img{transform:scale(1.06);}
+.about-image:hover img{transform:none;}
 
 .about-text .section-label,
 .about-text .section-title{
@@ -886,8 +886,9 @@ p,h1,h2,h3,a,span,button{hyphens:none;}
 p,h1,h2,h3,a,span,button{hyphens:none;overflow-wrap:break-word;}
 @media(max-width:520px){body{overflow-x:hidden;} nav a,.btn,.clean-btn,.submit-btn,.filter-btn{line-height:1.35;}}
 
-/* Finální korekce výřezu portrétu makléřky */
-.about-image img{object-position:38% center;}
+/* Finální korekce výřezu portrétu makléřky – používá se hotový soubor maklerka-uvod.webp bez posunutého ořezu */
+.about-image img{object-position:center center !important;object-fit:cover !important;}
+.about-image:hover img{transform:none !important;}
 </style>
 </head>
 
