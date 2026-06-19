@@ -886,9 +886,25 @@ p,h1,h2,h3,a,span,button{hyphens:none;}
 p,h1,h2,h3,a,span,button{hyphens:none;overflow-wrap:break-word;}
 @media(max-width:520px){body{overflow-x:hidden;} nav a,.btn,.clean-btn,.submit-btn,.filter-btn{line-height:1.35;}}
 
-/* Finální korekce výřezu portrétu makléřky – používá se hotový soubor maklerka-uvod.webp bez posunutého ořezu */
-.about-image img{object-position:center center !important;object-fit:cover !important;}
+/* Finální korekce portrétu makléřky – poměr rámečku odpovídá souboru maklerka-uvod.webp, takže se na tabletu ani PC neořezává obličej/ruka */
+.about-image{
+  aspect-ratio:644/878 !important;
+  height:auto !important;
+  max-width:410px !important;
+}
+.about-image img{
+  width:100% !important;
+  height:100% !important;
+  object-position:center center !important;
+  object-fit:cover !important;
+}
 .about-image:hover img{transform:none !important;}
+@media (max-width:900px){
+  .about-image{max-width:390px !important;}
+}
+@media (max-width:600px){
+  .about-image{max-width:330px !important;}
+}
 </style>
 </head>
 

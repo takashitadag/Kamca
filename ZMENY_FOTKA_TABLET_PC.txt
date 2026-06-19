@@ -1,0 +1,1 @@
+Opraven portrét Kamily v sekci O makléřce pro tablet a PC: rámeček má nyní stejný poměr stran jako maklerka-uvod.webp, takže se fotka zbytečně neořezává. Mobilní zobrazení zůstává zachované.
