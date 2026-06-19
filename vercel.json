@@ -65,6 +65,16 @@
       "source": "/oceneni",
       "destination": "/oceneni-nemovitosti",
       "permanent": true
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin-reference",
+      "permanent": false
+    },
+    {
+      "source": "/administrace",
+      "destination": "/admin-reference",
+      "permanent": false
     }
   ]
 }

@@ -931,7 +931,7 @@ Každý obchod je jedinečný. Zakládám si na osobním přístupu,
 férovosti a kvalitní prezentaci nemovitostí.
 </p>
 
-<div class="references">
+<div class="references" id="referencesList">
 
 <div class="reference reveal delay-1">
 
@@ -973,8 +973,6 @@ Dokonalé.
 
 </div>
 
-
-<!-- Další reference lze doplnit zkopírováním jedné karty výše. Kvůli GDPR používat zkrácené jméno typu „Petr S.“ nebo „manželé Novákovi“ a přidat kontext zakázky. -->
 </div>
 
 </section>
@@ -1163,6 +1161,76 @@ function startCounters(){
 
 window.addEventListener("scroll", startCounters);
 window.addEventListener("load", startCounters);
+
+async function loadPublicReferences(){
+  const list = document.getElementById("referencesList");
+  if(!list) return;
+
+  try{
+    const response = await fetch("/api/references", { headers: { "Accept": "application/json" } });
+    const data = await response.json();
+
+    if(!response.ok || !data.ok || !Array.isArray(data.items) || !data.items.length){
+      return;
+    }
+
+    list.innerHTML = data.items.map((item, index) => {
+      const name = escapeHtml(item.name || "Klient");
+      const location = escapeHtml(item.location || "");
+      const category = escapeHtml(item.category || "Reference klienta");
+      const review = escapeHtml(item.review || "");
+      const initials = getInitials(name);
+      const delay = Math.min(index + 1, 4);
+
+      return `
+        <div class="reference reveal delay-${delay}">
+          <div class="stars">★★★★★</div>
+          <div class="reference-badge">Doporučuji</div>
+          <div class="reference-context">${category}</div>
+          <p>„${review}“</p>
+          <div class="client">
+            <div class="avatar">${initials}</div>
+            <div>
+              <h3>${name}</h3>
+              <span>${location ? "Klient, " + location : "Klient"}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    const newRevealElements = list.querySelectorAll(".reveal");
+    newRevealElements.forEach(el => {
+      observer.observe(el);
+      setTimeout(() => el.classList.add("active"), 80);
+    });
+  }catch(error){
+    console.warn("Reference se nepodařilo načíst z administrace.", error);
+  }
+}
+
+function escapeHtml(value){
+  const map = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "'": "&#039;",
+    '"': "&quot;"
+  };
+
+  return String(value ?? "").replace(/[&<>'"]/g, char => map[char]);
+}
+function getInitials(name){
+  const parts = String(name || "")
+    .replace(/[^A-Za-zÁ-ž0-9\s.]/g, "")
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if(!parts.length) return "K";
+  return parts.slice(0,2).map(part => part[0]).join("").toUpperCase();
+}
+
+loadPublicReferences();
 </script>
 
 </body>

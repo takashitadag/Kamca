@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Administrace referencí | Kamila Kopřivová</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#121b3f;--gold:#c8ab72;--soft:#f7f5f0;--border:#e9dfcf;--text:#2e2e2e;--muted:#777;--danger:#b42318;--success:#087443;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Montserrat",Arial,sans-serif;background:var(--soft);color:var(--text);line-height:1.6;min-height:100vh}
+.admin-header{background:var(--navy);color:white;padding:34px 7%;display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}
+.admin-header h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(30px,5vw,52px);font-weight:500}
+.admin-header p{color:#eadcc0;font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-top:6px}
+.admin-header a{color:white;text-decoration:none;border:1px solid rgba(255,255,255,.35);padding:12px 18px;text-transform:uppercase;letter-spacing:2px;font-size:12px}
+.wrap{width:min(1180px,92%);margin:42px auto 80px}
+.panel{background:white;border:1px solid var(--border);box-shadow:0 18px 50px rgba(18,27,63,.08);padding:28px;margin-bottom:24px}
+.panel h2{font-family:"Playfair Display",Georgia,serif;color:var(--navy);font-size:32px;margin-bottom:16px}
+.login{max-width:560px;margin:70px auto}
+label{display:block;font-weight:600;color:var(--navy);font-size:13px;text-transform:uppercase;letter-spacing:1.5px;margin:16px 0 8px}
+input,textarea,select{width:100%;border:1px solid var(--border);padding:14px 15px;font-family:inherit;font-size:15px;background:#fff;color:var(--text);border-radius:0;outline:none}
+textarea{min-height:160px;resize:vertical}
+input:focus,textarea:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,171,114,.16)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.full{grid-column:1/-1}.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:20px}.check{display:flex;gap:10px;align-items:center;margin-top:18px}.check input{width:auto;transform:scale(1.2)}
+button{border:0;background:var(--navy);color:white;padding:14px 22px;text-transform:uppercase;letter-spacing:2px;font-weight:700;font-size:12px;cursor:pointer;font-family:inherit;transition:.25s}button:hover{background:#1d2d63}.secondary{background:white;color:var(--navy);border:1px solid var(--border)}.secondary:hover{background:#faf7f1}.danger{background:var(--danger)}.danger:hover{background:#8f1c13}.success{background:var(--success)}.success:hover{background:#065f36}.hidden{display:none!important}.status{padding:13px 15px;margin:18px 0;border:1px solid var(--border);background:#fbfaf7;color:var(--muted)}.status.error{border-color:#f3b4ad;color:var(--danger);background:#fff5f3}.status.ok{border-color:#b9e6cc;color:var(--success);background:#f2fbf6}.list{display:grid;gap:16px}.card{border:1px solid var(--border);padding:22px;background:#fff}.card-top{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}.badge{display:inline-block;background:#efe3c7;color:var(--navy);font-size:11px;text-transform:uppercase;letter-spacing:1.8px;font-weight:700;padding:7px 10px;margin-bottom:10px}.card h3{font-family:"Playfair Display",Georgia,serif;color:var(--navy);font-size:28px;font-weight:500}.meta{color:var(--muted);font-size:14px;margin:3px 0 12px}.review{font-style:italic;color:#555}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button{padding:10px 13px;font-size:11px}.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed var(--border)}.help{font-size:14px;color:var(--muted);margin-top:8px}.logout{background:transparent;border:1px solid rgba(255,255,255,.35)}
+@media(max-width:760px){.admin-header{padding:26px 5%}.wrap{width:92%;margin-top:28px}.panel{padding:20px}.form-grid{grid-template-columns:1fr}.row button{width:100%}.admin-header a{width:100%;text-align:center}}
+</style>
+</head>
+<body>
+<header class="admin-header">
+  <div>
+    <h1>Administrace referencí</h1>
+    <p>Ing. Kamila Kopřivová</p>
+  </div>
+  <div class="row" style="margin:0">
+    <a href="reference.html">Zobrazit reference</a>
+    <button id="logoutBtn" class="logout hidden" type="button">Odhlásit</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="loginPanel" class="panel login">
+    <h2>Přihlášení</h2>
+    <p class="help">Zadejte heslo pro správu referencí.</p>
+    <label for="password">Heslo</label>
+    <input id="password" type="password" autocomplete="current-password" placeholder="Heslo">
+    <div id="loginStatus" class="status hidden"></div>
+    <div class="row">
+      <button id="loginBtn" type="button">Přihlásit</button>
+    </div>
+  </section>
+
+  <section id="adminPanel" class="hidden">
+    <section class="panel">
+      <h2 id="formTitle">Přidat referenci</h2>
+      <form id="referenceForm">
+        <input type="hidden" id="refId">
+        <div class="form-grid">
+          <div>
+            <label for="name">Jméno klienta</label>
+            <input id="name" type="text" placeholder="Např. Daniela K." required>
+          </div>
+          <div>
+            <label for="location">Město / oblast</label>
+            <input id="location" type="text" placeholder="Např. Olomouc">
+          </div>
+          <div class="full">
+            <label for="category">Typ zakázky</label>
+            <input id="category" type="text" placeholder="Např. Pronájem bytu, Olomouc (2026)" required>
+          </div>
+          <div class="full">
+            <label for="review">Text reference</label>
+            <textarea id="review" placeholder="Sem vložte přesný text reference od klienta." required></textarea>
+          </div>
+        </div>
+        <label class="check"><input id="visible" type="checkbox" checked> Zobrazit na webu</label>
+        <div id="formStatus" class="status hidden"></div>
+        <div class="row">
+          <button type="submit" class="success">Uložit referenci</button>
+          <button id="resetBtn" type="button" class="secondary">Nová reference</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Uložené reference</h2>
+      <p class="help">Skryté reference se neukazují návštěvníkům webu, ale zůstávají v administraci.</p>
+      <div id="listStatus" class="status hidden"></div>
+      <div id="referencesList" class="list"></div>
+    </section>
+  </section>
+</main>
+
+<script>
+const state = { password: sessionStorage.getItem("kamilaAdminPassword") || "", items: [] };
+const $ = id => document.getElementById(id);
+
+function setStatus(el, message, type = ""){
+  el.textContent = message;
+  el.className = `status ${type}`.trim();
+  el.classList.toggle("hidden", !message);
+}
+
+function escapeHtml(value){
+  return String(value ?? "").replace(/[&<>'"]/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#039;","\"":"&quot;"}[char]));
+}
+
+async function api(method, payload = null){
+  const options = {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      "x-admin-password": state.password
+    }
+  };
+
+  if(payload) options.body = JSON.stringify(payload);
+
+  const response = await fetch("/api/references", options);
+  const data = await response.json().catch(() => ({}));
+
+  if(!response.ok || data.ok === false){
+    throw new Error(data.message || "Akci se nepodařilo provést.");
+  }
+
+  return data;
+}
+
+function showAdmin(){
+  $("loginPanel").classList.add("hidden");
+  $("adminPanel").classList.remove("hidden");
+  $("logoutBtn").classList.remove("hidden");
+}
+
+function showLogin(){
+  $("loginPanel").classList.remove("hidden");
+  $("adminPanel").classList.add("hidden");
+  $("logoutBtn").classList.add("hidden");
+}
+
+function resetForm(){
+  $("formTitle").textContent = "Přidat referenci";
+  $("refId").value = "";
+  $("name").value = "";
+  $("location").value = "";
+  $("category").value = "";
+  $("review").value = "";
+  $("visible").checked = true;
+  setStatus($("formStatus"), "");
+}
+
+function fillForm(item){
+  $("formTitle").textContent = "Upravit referenci";
+  $("refId").value = item.id;
+  $("name").value = item.name || "";
+  $("location").value = item.location || "";
+  $("category").value = item.category || "";
+  $("review").value = item.review || "";
+  $("visible").checked = item.visible !== false;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function renderList(){
+  const box = $("referencesList");
+
+  if(!state.items.length){
+    box.innerHTML = '<div class="empty">Zatím není uložená žádná reference.</div>';
+    return;
+  }
+
+  box.innerHTML = state.items.map(item => `
+    <article class="card">
+      <div class="card-top">
+        <div>
+          <span class="badge">${item.visible ? "Zobrazeno" : "Skryto"}</span>
+          <h3>${escapeHtml(item.name || "Bez jména")}</h3>
+          <div class="meta">${escapeHtml(item.category || "Bez typu zakázky")}${item.location ? " · " + escapeHtml(item.location) : ""}</div>
+        </div>
+        <div class="actions">
+          <button type="button" onclick="editReference(${Number(item.id)})">Upravit</button>
+          <button type="button" class="secondary" onclick="toggleVisible(${Number(item.id)})">${item.visible ? "Skrýt" : "Zobrazit"}</button>
+          <button type="button" class="danger" onclick="deleteReference(${Number(item.id)})">Smazat</button>
+        </div>
+      </div>
+      <p class="review">„${escapeHtml(item.review || "")}“</p>
+    </article>
+  `).join("");
+}
+
+async function loadReferences(){
+  setStatus($("listStatus"), "Načítám reference...");
+  const data = await api("GET");
+  state.items = data.items || [];
+  renderList();
+  setStatus($("listStatus"), "");
+}
+
+window.editReference = function(id){
+  const item = state.items.find(ref => Number(ref.id) === Number(id));
+  if(item) fillForm(item);
+};
+
+window.toggleVisible = async function(id){
+  const item = state.items.find(ref => Number(ref.id) === Number(id));
+  if(!item) return;
+
+  await api("PUT", { ...item, visible: !item.visible });
+  await loadReferences();
+};
+
+window.deleteReference = async function(id){
+  if(!confirm("Opravdu chcete tuto referenci smazat?")) return;
+  await api("DELETE", { id });
+  await loadReferences();
+};
+
+$("loginBtn").addEventListener("click", async () => {
+  state.password = $("password").value.trim();
+  if(!state.password){
+    setStatus($("loginStatus"), "Zadejte heslo.", "error");
+    return;
+  }
+
+  try{
+    await loadReferences();
+    sessionStorage.setItem("kamilaAdminPassword", state.password);
+    showAdmin();
+    setStatus($("loginStatus"), "");
+  }catch(error){
+    setStatus($("loginStatus"), error.message, "error");
+  }
+});
+
+$("password").addEventListener("keydown", event => {
+  if(event.key === "Enter") $("loginBtn").click();
+});
+
+$("logoutBtn").addEventListener("click", () => {
+  sessionStorage.removeItem("kamilaAdminPassword");
+  state.password = "";
+  state.items = [];
+  resetForm();
+  showLogin();
+});
+
+$("resetBtn").addEventListener("click", resetForm);
+
+$("referenceForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const payload = {
+    id: $("refId").value ? Number($("refId").value) : undefined,
+    name: $("name").value,
+    location: $("location").value,
+    category: $("category").value,
+    review: $("review").value,
+    visible: $("visible").checked
+  };
+
+  try{
+    setStatus($("formStatus"), "Ukládám...");
+    await api(payload.id ? "PUT" : "POST", payload);
+    setStatus($("formStatus"), "Reference byla uložená.", "ok");
+    resetForm();
+    await loadReferences();
+  }catch(error){
+    setStatus($("formStatus"), error.message, "error");
+  }
+});
+
+if(state.password){
+  $("password").value = state.password;
+  loadReferences().then(showAdmin).catch(() => showLogin());
+}
+</script>
+</body>
+</html>
