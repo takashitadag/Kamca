@@ -11,6 +11,28 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--white:#fff;--soft:#f7f5f0;--gold:#c8ab72;--gold-light:#eadcc0;--navy:#121b3f;--text:#2d2d2d;--muted:#666;--border:#ece6da;}*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}body{font-family:"Montserrat",Arial,Helvetica,sans-serif;background:white;color:var(--text);line-height:1.8;}h1,h2,h3{font-family:"Playfair Display",Georgia,"Times New Roman",serif;font-weight:400;color:var(--navy);line-height:1.2;}header{background:var(--navy);color:white;padding:28px 7%;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}.logo{color:white;text-decoration:none;font-size:22px;letter-spacing:3px;text-transform:uppercase;}.logo span{color:var(--gold-light);}nav{display:flex;gap:18px;flex-wrap:wrap;}nav a{color:white;text-decoration:none;font-size:12px;letter-spacing:2px;text-transform:uppercase;}nav a:hover{color:var(--gold-light);}main{padding:80px 8%;max-width:1080px;margin:auto;}h1{font-size:clamp(36px,6vw,62px);margin-bottom:18px;}h2{font-size:clamp(28px,4vw,38px);margin:52px 0 16px;}h3{font-size:24px;margin:28px 0 12px;}p,li{color:var(--muted);margin-bottom:12px;}ul{padding-left:24px;margin-bottom:18px;}.box{background:var(--soft);border:1px solid var(--border);padding:28px;margin:30px 0;}.legal-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px;}.legal-meta div{background:white;border:1px solid var(--border);padding:18px;}.legal-meta strong{display:block;color:var(--navy);margin-bottom:4px;}a{color:var(--navy);}a:hover{color:var(--gold);}.back{display:inline-block;margin-top:34px;background:var(--navy);color:white;text-decoration:none;padding:14px 24px;font-size:12px;letter-spacing:2px;text-transform:uppercase;}.back:hover{background:var(--gold);color:white;}footer{background:var(--navy);color:white;text-align:center;padding:28px;font-size:13px;letter-spacing:1px;}.footer-link{color:var(--gold-light);text-decoration:none;font-size:12px;letter-spacing:1px;}.footer-link:hover{color:white;}@media(max-width:768px){main{padding:56px 6%;}.legal-meta{grid-template-columns:1fr;}header{justify-content:center;text-align:center;}nav{justify-content:center;}}
+
+
+/* Marvonix responsive polish */
+.phone-link{color:inherit;text-decoration:none;font-weight:600;}
+.phone-link:hover{color:var(--gold);}
+nav a,.btn,.clean-btn,.submit-btn,.hero-btn,.back,.filter-btn{white-space:normal;text-wrap:balance;}
+p,h1,h2,h3,.section-title,.section-subtitle,.property h3,.property-content h3,.card p,.info p{overflow-wrap:break-word;word-break:normal;hyphens:auto;}
+@media(max-width:768px){
+  header{padding-left:5%;padding-right:5%;}
+  nav{gap:8px 10px;}
+  nav a{font-size:11px;letter-spacing:1px;line-height:1.25;padding:8px 10px;text-align:center;}
+  .logo{letter-spacing:1.8px;}
+  .hero-content,.section-title,.section-subtitle{text-wrap:balance;}
+  .btn,.clean-btn,.submit-btn,.hero-btn,.back,.filter-btn{letter-spacing:1.2px;line-height:1.35;min-height:44px;display:inline-flex;align-items:center;justify-content:center;text-align:center;}
+  footer{font-size:12px;line-height:1.7;letter-spacing:.3px;padding:26px 6%;}
+  .footer-link{display:inline-block;margin-top:8px;line-height:1.4;}
+}
+@media(max-width:420px){
+  nav a{font-size:10px;letter-spacing:.8px;padding:7px 8px;}
+  .btn,.clean-btn,.submit-btn,.hero-btn,.back,.filter-btn{font-size:11px;letter-spacing:1px;padding-left:16px;padding-right:16px;}
+}
+
 </style>
 </head>
 <body>
@@ -20,7 +42,7 @@
 <a href="index.html">Domů</a>
 <a href="sluzby.html">Služby</a>
 <a href="nemovitosti.html">Nemovitosti</a>
-<a href="oceneni-nemovitosti.html">Ocenění</a>
+<a href="oceneni-nemovitosti.html">Odhad</a>
 <a href="reference.html">Reference</a>
 <a href="index.html#kontakt">Kontakt</a>
 </nav>
@@ -37,7 +59,7 @@
 <div><strong>Sídlo</strong>Loučky 143, Hlušovice 783 14</div>
 <div><strong>Evidence</strong>Fyzická osoba zapsaná v živnostenském rejstříku vedeném u Živnostenského úřadu v Olomouci.</div>
 <div><strong>E-mail</strong><a href="mailto:koprivovakamila@gmail.com">koprivovakamila@gmail.com</a></div>
-<div><strong>Telefon</strong><a href="tel:+420736167321">+420 736 167 321</a></div>
+<div><strong>Telefon</strong><a class="phone-link" href="tel:+420736167321">+420 736 167 321</a></div>
 </div>
 </div>
 

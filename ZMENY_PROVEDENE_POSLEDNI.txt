@@ -1,0 +1,7 @@
+Provedené úpravy:
+- V navigaci změněno „Ohodnocení/Ocenění“ na „Odhad“.
+- Stránka ocenění přejmenována textově na „Odhad ceny nemovitosti“.
+- CTA tlačítka upravena na „Odhad ceny nemovitosti“.
+- Viditelná telefonní čísla jsou klikací přes tel:+420736167321.
+- Přidány responzivní CSS úpravy: menší letter-spacing na mobilu, lepší zalamování tlačítek/navigace/textů, vyvážené nadpisy a footer.
+- Zachována URL oceneni-nemovitosti.html, aby se nerozbily existující odkazy a API /api/oceneni.

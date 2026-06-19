@@ -1,0 +1,5 @@
+Pozadovane upravy:
+1. Hero na uvodni strance zmenit na assets/img/hero-kuchyn.webp bez rozmazani.
+2. Sekci 'O maklerce' presunout NAD statistiky/cisla.
+3. Fotku Kamily vratit do puvodniho vertikalniho obdelniku (cover), ale nastavit object-position:center center.
+4. Zachovat profesionalni layout.

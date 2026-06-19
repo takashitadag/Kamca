@@ -841,6 +841,28 @@ transform:none;
 .lightbox-next{right:18px;}
 }
 
+
+
+/* Marvonix responsive polish */
+.phone-link{color:inherit;text-decoration:none;font-weight:600;}
+.phone-link:hover{color:var(--gold);}
+nav a,.btn,.clean-btn,.submit-btn,.hero-btn,.back,.filter-btn{white-space:normal;text-wrap:balance;}
+p,h1,h2,h3,.section-title,.section-subtitle,.property h3,.property-content h3,.card p,.info p{overflow-wrap:break-word;word-break:normal;hyphens:auto;}
+@media(max-width:768px){
+  header{padding-left:5%;padding-right:5%;}
+  nav{gap:8px 10px;}
+  nav a{font-size:11px;letter-spacing:1px;line-height:1.25;padding:8px 10px;text-align:center;}
+  .logo{letter-spacing:1.8px;}
+  .hero-content,.section-title,.section-subtitle{text-wrap:balance;}
+  .btn,.clean-btn,.submit-btn,.hero-btn,.back,.filter-btn{letter-spacing:1.2px;line-height:1.35;min-height:44px;display:inline-flex;align-items:center;justify-content:center;text-align:center;}
+  footer{font-size:12px;line-height:1.7;letter-spacing:.3px;padding:26px 6%;}
+  .footer-link{display:inline-block;margin-top:8px;line-height:1.4;}
+}
+@media(max-width:420px){
+  nav a{font-size:10px;letter-spacing:.8px;padding:7px 8px;}
+  .btn,.clean-btn,.submit-btn,.hero-btn,.back,.filter-btn{font-size:11px;letter-spacing:1px;padding-left:16px;padding-right:16px;}
+}
+
 </style>
 </head>
 
@@ -855,7 +877,7 @@ transform:none;
 <a href="index.html" class="transition-link">Domů</a>
 <a href="sluzby.html" class="transition-link">Služby</a>
 <a href="nemovitosti.html" class="transition-link">Nemovitosti</a>
-<a href="oceneni-nemovitosti.html" class="transition-link">Ohodnocení</a>
+<a href="oceneni-nemovitosti.html" class="transition-link">Odhad</a>
 <a href="reference.html" class="transition-link">Reference</a>
 <a href="index.html#kontakt">Kontakt</a>
 </nav>
@@ -1389,7 +1411,7 @@ function renderDetail(item){
             <h3 class="contact-name">Ing. Kamila Kopřivová</h3>
             <p>Realitní makléřka pro Olomoucký kraj</p>
             <p>koprivovakamila@gmail.com</p>
-            <p>+420 736 167 321</p>
+            <p><a class="phone-link" href="tel:+420736167321">+420 736 167 321</a></p>
           </div>
 
         </aside>
