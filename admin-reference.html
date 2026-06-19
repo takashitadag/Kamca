@@ -121,7 +121,8 @@ async function api(method, payload = null){
 
   if(payload) options.body = JSON.stringify(payload);
 
-  const response = await fetch("/api/references", options);
+  const endpoint = method === "GET" ? "/api/references?admin=1" : "/api/references";
+  const response = await fetch(endpoint, options);
   const data = await response.json().catch(() => ({}));
 
   if(!response.ok || data.ok === false){
@@ -274,7 +275,7 @@ $("referenceForm").addEventListener("submit", async event => {
 
 if(state.password){
   $("password").value = state.password;
-  loadReferences().then(showAdmin).catch(() => showLogin());
+  loadReferences().then(showAdmin).catch(() => { sessionStorage.removeItem("kamilaAdminPassword"); state.password = ""; showLogin(); });
 }
 </script>
 </body>
