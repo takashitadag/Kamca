@@ -409,6 +409,19 @@ font-weight:600;
 transition:.35s ease;
 }
 
+
+.reference-loading{
+  grid-column:1/-1;
+  padding:38px 28px;
+  border:1px solid var(--line);
+  background:#fff;
+  text-align:center;
+  color:var(--muted);
+  letter-spacing:.08em;
+  font-size:.82rem;
+  text-transform:uppercase;
+}
+
 .reference:hover .avatar{
 background:var(--gold);
 transform:scale(1.05);
@@ -931,46 +944,10 @@ Každý obchod je jedinečný. Zakládám si na osobním přístupu,
 férovosti a kvalitní prezentaci nemovitostí.
 </p>
 
-<div class="references" id="referencesList">
+<div class="references" id="referencesList" aria-live="polite">
 
-<div class="reference reveal delay-1">
-
-<div class="stars">★★★★★</div>
-<div class="reference-badge">Doporučuji</div>
-<div class="reference-context">Pronájem bytu · Olomoucký kraj (2026)</div>
-
-<p>
-Na inzerci jsem se dívala a byla jsem z ní nadšená. Moc se Vám povedla.
-</p>
-
-<div class="client">
-<div class="avatar">DD</div>
-<div>
-<h3>Daniela D.</h3>
-<span>Klientka, Olomoucký kraj</span>
-</div>
-</div>
-
-</div>
-
-<div class="reference reveal delay-2">
-
-<div class="stars">★★★★★</div>
-<div class="reference-badge">Doporučuji</div>
-<div class="reference-context">Pronájem bytu · Doporučení klientky</div>
-
-<p>
-Dokonalé.
-</p>
-
-<div class="client">
-<div class="avatar">ŽH</div>
-<div>
-<h3>Žaneta H.</h3>
-<span>Klientka, doporučení</span>
-</div>
-</div>
-
+<div class="reference-loading reveal delay-1">
+Reference se načítají.
 </div>
 
 </div>
@@ -1171,6 +1148,7 @@ async function loadPublicReferences(){
     const data = await response.json();
 
     if(!response.ok || !data.ok || !Array.isArray(data.items) || !data.items.length){
+      list.innerHTML = '<div class="reference-loading">Zatím nejsou zveřejněné žádné reference.</div>';
       return;
     }
 
