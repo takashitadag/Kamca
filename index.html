@@ -52,6 +52,9 @@
 html{scroll-behavior:smooth;}
 
 body{
+min-height:100vh;
+display:flex;
+flex-direction:column;
 font-family:"Montserrat",Arial,Helvetica,sans-serif;
 background:white;
 color:var(--text);
@@ -611,6 +614,7 @@ transform:translateY(-4px);
 }
 
 footer{
+margin-top:auto;
 background:var(--navy);
 color:white;
 text-align:center;
@@ -1067,11 +1071,11 @@ prezentace a bezpečné vedení celého procesu.
 <h2 class="section-title reveal delay-1">Vybrané nemovitosti</h2>
 
 <p class="section-subtitle reveal delay-2">
-Nejnovější aktivní nabídky načtené z realitního systému.
+Aktuální výběr nemovitostí k prodeji a pronájmu.
 </p>
 
 <div class="property-grid" id="homePropertiesGrid">
-<div class="loading-properties">Načítám nejnovější nemovitosti...</div>
+<div class="loading-properties">Připravuji aktuální nabídku...</div>
 </div>
 
 <div class="center reveal delay-4">
