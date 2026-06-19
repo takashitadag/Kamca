@@ -951,7 +951,7 @@ Aktivní nemovitosti jsou oddělené od realizovaných obchodů, aby se nabídky
 
 <div class="import-note reveal delay-3" id="activeImportNote">
 <strong>Aktuální nabídka:</strong>
-Nemovitosti jsou pravidelně aktualizované podle aktuální nabídky makléřky.
+Vyberte si z aktuální nabídky nemovitostí.
 </div>
 
 <div class="filters reveal delay-4" data-filter-group="active">
@@ -1492,11 +1492,11 @@ async function loadProperties(){
 
     activeImportNote.classList.add("success");
     activeImportNote.classList.remove("error");
-    activeImportNote.innerHTML = `<strong>Aktuální nabídka:</strong> Zobrazeno ${activeItems.length} aktivních nebo rezervovaných nabídek.`;
+    activeImportNote.innerHTML = `<strong>Aktuální nabídka:</strong> Pečlivě vybrané nemovitosti k prodeji a pronájmu.`;
 
     soldImportNote.classList.add("success");
     soldImportNote.classList.remove("error");
-    soldImportNote.innerHTML = `<strong>Portfolio realizací:</strong> Zobrazeno ${realizedItems.length} dokončených obchodů.`;
+    soldImportNote.innerHTML = `<strong>Portfolio realizací:</strong> Ukázky úspěšně realizovaných obchodů.`;
 
     setupFilters();
     setupReveal();
