@@ -354,6 +354,16 @@ function filterByStatus(items, status){
 function buildFeedUrl(rawUrl){
   const url = new URL(rawUrl);
 
+  // Poski umí vracet jen část nabídek, pokud není nastaven limit.
+  // Proto si výslovně říkáme o větší dávku a řadíme od nejnovějších.
+  if(!url.searchParams.has("limit")){
+    url.searchParams.set("limit", "500");
+  }
+
+  if(!url.searchParams.has("offset")){
+    url.searchParams.set("offset", "0");
+  }
+
   if(!url.searchParams.has("orderby")){
     url.searchParams.set("orderby", "new");
   }
