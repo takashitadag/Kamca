@@ -4,20 +4,30 @@ function json(res, status, payload){
   return res.status(status).json(payload);
 }
 
+function normalizeSupabaseUrl(value){
+  const raw = String(value || "").trim();
+  if(!raw) return "";
+
+  try{
+    const parsed = new URL(raw);
+    return `${parsed.protocol}//${parsed.host}`;
+  }catch{
+    return raw
+      .replace(/\/rest\/v1.*$/i, "")
+      .replace(/\/$/, "");
+  }
+}
+
 function getEnv(){
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SECRET_KEY;
-  const password = process.env.ADMIN_PASSWORD;
+  const url = normalizeSupabaseUrl(process.env.SUPABASE_URL);
+  const key = String(process.env.SUPABASE_SECRET_KEY || "").trim();
+  const password = String(process.env.ADMIN_PASSWORD || "").trim();
 
   if(!url || !key){
     throw new Error("Chybí SUPABASE_URL nebo SUPABASE_SECRET_KEY ve Vercelu.");
   }
 
-  return {
-    url: url.replace(/\/$/, ""),
-    key,
-    password
-  };
+  return { url, key, password };
 }
 
 function isAuthorized(req, adminPassword){
@@ -79,8 +89,10 @@ function validateReference(data){
 
 async function supabaseRequest(path, options = {}){
   const { url, key } = getEnv();
+  const cleanPath = String(path || "").replace(/^\/+/, "");
+  const endpoint = `${url}/rest/v1/${cleanPath}`;
 
-  const response = await fetch(`${url}/rest/v1/${path}`, {
+  const response = await fetch(endpoint, {
     ...options,
     headers: {
       apikey: key,
@@ -102,7 +114,7 @@ async function supabaseRequest(path, options = {}){
 
   if(!response.ok){
     const message = typeof data === "object" && data?.message ? data.message : `Supabase chyba ${response.status}`;
-    throw new Error(message);
+    throw new Error(`${message} (${response.status})`);
   }
 
   return data;
