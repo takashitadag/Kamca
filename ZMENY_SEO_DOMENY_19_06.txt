@@ -1,0 +1,14 @@
+Provedené úpravy pro napojení domén a indexaci Google:
+
+1. Nahrazeny staré Vercel adresy za produkční doménu https://www.kamilakoprivova.cz.
+2. Upraven robots.txt na produkční sitemapu.
+3. Přepsána sitemap.xml na hlavní produkční URL bez duplicitních domén.
+4. Doplněny/opraveny canonical URL a Open Graph URL.
+5. Přidána strukturovaná data Schema.org pro realitní makléřku a web.
+6. Doplněna SEO metadata pro stránku právních informací.
+7. Přidány redirecty /gdpr, /gdpr.html a /oceneni ve vercel.json.
+8. Textově sjednoceno „ocenění“ na „odhad“ tam, kde jde o službu odhadu ceny nemovitosti.
+
+Doporučení po nasazení:
+- Přidat https://www.kamilakoprivova.cz/sitemap.xml do Google Search Console.
+- V Search Console požádat o indexaci hlavní stránky.

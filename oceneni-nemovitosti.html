@@ -7,26 +7,26 @@
 
 <title>Odhad ceny nemovitosti | Kamila Kopřivová</title>
 
-<meta name="description" content="Nezávazné ocenění nemovitosti od Ing. Kamily Kopřivové. Zjistěte reálnou hodnotu bytu, domu, pozemku nebo komerční nemovitosti v Olomouckém kraji.">
-<meta name="keywords" content="ocenění nemovitosti Olomouc, odhad ceny nemovitosti, realitní makléřka Olomouc, Kamila Kopřivová, cena nemovitosti Olomoucký kraj">
+<meta name="description" content="Nezávazné odhad ceny nemovitosti od Ing. Kamily Kopřivové. Zjistěte reálnou hodnotu bytu, domu, pozemku nebo komerční nemovitosti v Olomouckém kraji.">
+<meta name="keywords" content="odhad ceny nemovitosti Olomouc, odhad ceny nemovitosti, realitní makléřka Olomouc, Kamila Kopřivová, cena nemovitosti Olomoucký kraj">
 <meta name="author" content="Ing. Kamila Kopřivová">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#121b3f">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
-<link rel="canonical" href="https://kamila-self.vercel.app/oceneni-nemovitosti">
+<link rel="canonical" href="https://www.kamilakoprivova.cz/oceneni-nemovitosti">
 
 <meta property="og:title" content="Odhad ceny nemovitosti | Kamila Kopřivová">
 <meta property="og:description" content="Zjistěte reálnou hodnotu bytu, domu, pozemku nebo komerční nemovitosti v Olomouckém kraji.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://kamila-self.vercel.app/oceneni-nemovitosti">
-<meta property="og:image" content="https://kamila-self.vercel.app/images/IMG_1011.png">
+<meta property="og:url" content="https://www.kamilakoprivova.cz/oceneni-nemovitosti">
+<meta property="og:image" content="https://www.kamilakoprivova.cz/images/IMG_1011.png">
 <meta property="og:locale" content="cs_CZ">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Odhad ceny nemovitosti | Kamila Kopřivová">
-<meta name="twitter:description" content="Nezávazné ocenění nemovitosti v Olomouckém kraji.">
-<meta name="twitter:image" content="https://kamila-self.vercel.app/images/IMG_1011.png">
+<meta name="twitter:description" content="Nezávazné odhad ceny nemovitosti v Olomouckém kraji.">
+<meta name="twitter:image" content="https://www.kamilakoprivova.cz/images/IMG_1011.png">
 
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1177,9 +1177,9 @@ const valuationForm = document.querySelector("#valuationForm");
 const formStatus = document.querySelector("#formStatus");
 
 function buildMailto(data){
-  const subject = encodeURIComponent("Poptávka ocenění nemovitosti");
+  const subject = encodeURIComponent("Poptávka odhad ceny nemovitosti");
   const body = encodeURIComponent(
-    `Dobrý den,\n\nprosím o nezávazné ocenění nemovitosti.\n\nJméno: ${data.name}\nTelefon: ${data.phone}\nE-mail: ${data.email}\nTyp nemovitosti: ${data.propertyType}\nZáměr: ${data.intent}\nLokalita: ${data.location}\nZpráva: ${data.message || ""}\n\nDěkuji.`
+    `Dobrý den,\n\nprosím o nezávazné odhad ceny nemovitosti.\n\nJméno: ${data.name}\nTelefon: ${data.phone}\nE-mail: ${data.email}\nTyp nemovitosti: ${data.propertyType}\nZáměr: ${data.intent}\nLokalita: ${data.location}\nZpráva: ${data.message || ""}\n\nDěkuji.`
   );
   return `mailto:koprivovakamila@gmail.com?subject=${subject}&body=${body}`;
 }
