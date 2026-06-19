@@ -1,0 +1,7 @@
+Provedené úpravy 19. 6.
+
+1. Fotka Ing. Kamily Kopřivové v sekci O makléřce byla posunuta ve výřezu pomocí object-position: 38% center, aby byla vidět celá postava/ruka s klíči a zůstal zachovaný vertikální obdélníkový formát.
+2. Přidán finální CSS override pro .about-image img napříč stránkami, aby se výřez nepřepsal jiným pravidlem v responzivitě.
+3. U referencí byly doladěny kontextové štítky, aby působily jako příběh zakázky a zároveň zůstaly GDPR bezpečné bez uvádění plných jmen klientů.
+4. Zkontrolováno, že právní stránka obsahuje GDPR, AML a ČOI/ADR informace a odkazy jsou proklikávací.
+5. Zkontrolováno, že telefonní čísla jsou řešena přes tel:+420736167321.
