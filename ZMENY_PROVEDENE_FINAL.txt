@@ -1,0 +1,7 @@
+Opraveno podle zadání:
+- Hero na domovské stránce je byt s růžovým kobercem: images/hero-kuchyn.webp.
+- Fotka Kamily v sekci O makléřce je znovu vysoký obdélník, vycentrovaná na osobu.
+- Sekce O makléřce je přesunutá nad statistiky, aby byla hned dostupná.
+- Vypnuto automatické dělení slov pomlčkami na mobilech.
+- Doplněny responzivní úpravy pro mobil, tablet a desktop.
+- Telefonní odkazy zůstávají ve formátu tel:+420736167321.

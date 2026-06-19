@@ -680,7 +680,7 @@ padding-top:calc(22px + env(safe-area-inset-top));
 
 .hero h1{
 word-break:normal;
-hyphens:auto;
+hyphens:none;
 }
 
 .floating-contact a{
@@ -847,7 +847,7 @@ transform:none;
 .phone-link{color:inherit;text-decoration:none;font-weight:600;}
 .phone-link:hover{color:var(--gold);}
 nav a,.btn,.clean-btn,.submit-btn,.hero-btn,.back,.filter-btn{white-space:normal;text-wrap:balance;}
-p,h1,h2,h3,.section-title,.section-subtitle,.property h3,.property-content h3,.card p,.info p{overflow-wrap:break-word;word-break:normal;hyphens:auto;}
+p,h1,h2,h3,.section-title,.section-subtitle,.property h3,.property-content h3,.card p,.info p{overflow-wrap:break-word;word-break:normal;hyphens:none;}
 @media(max-width:768px){
   header{padding-left:5%;padding-right:5%;}
   nav{gap:8px 10px;}
@@ -863,6 +863,10 @@ p,h1,h2,h3,.section-title,.section-subtitle,.property h3,.property-content h3,.c
   .btn,.clean-btn,.submit-btn,.hero-btn,.back,.filter-btn{font-size:11px;letter-spacing:1px;padding-left:16px;padding-right:16px;}
 }
 
+
+/* Zakaz nehezkeho deleni slov */
+p,h1,h2,h3,a,span,button{hyphens:none;overflow-wrap:break-word;}
+@media(max-width:520px){body{overflow-x:hidden;} nav a,.btn,.clean-btn,.submit-btn,.filter-btn{line-height:1.35;}}
 </style>
 </head>
 
@@ -871,7 +875,7 @@ p,h1,h2,h3,.section-title,.section-subtitle,.property h3,.property-content h3,.c
 <div class="page-transition"></div>
 
 <header>
-<a href="index.html" class="logo transition-link" aria-label="Kamila Kopřivová – domů">Kamila <span>Kopřivová</span></a>
+<a href="index.html" class="logo transition-link" aria-label="Kamila Kopřivová domů">Kamila <span>Kopřivová</span></a>
 
 <nav aria-label="Hlavní navigace">
 <a href="index.html" class="transition-link">Domů</a>
@@ -1128,12 +1132,12 @@ function getBackText(item){
 
 function valueOrDash(value){
   const v = clean(value);
-  return v || "—";
+  return v || "Neuvedeno";
 }
 
 function paramRow(label, value){
   const v = valueOrDash(value);
-  if(v === "—") return "";
+  if(v === "Neuvedeno") return "";
   return `<div class="param"><span>${escapeHTML(label)}</span><span>${escapeHTML(v)}</span></div>`;
 }
 
