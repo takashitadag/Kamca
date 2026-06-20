@@ -113,6 +113,14 @@ function validateReference(data){
   return errors;
 }
 
+function validatePublicReference(data){
+  const errors = validateReference(data);
+  if(data.name && data.name.length < 2) errors.push("Jméno je příliš krátké.");
+  if(data.category && data.category.length < 4) errors.push("Typ spolupráce je příliš krátký.");
+  if(data.review && data.review.length < 12) errors.push("Text reference je příliš krátký.");
+  return errors;
+}
+
 async function supabaseRequest(path, options = {}){
   const { url, key } = getEnv();
   const cleanPath = String(path || "").replace(/^\/+/, "");
@@ -169,13 +177,21 @@ export default async function handler(req, res){
     }
 
     if(req.method === "POST"){
-      if(!isAuthorized(req, password)){
+      const body = getBody(req);
+      const publicSubmit = body?.publicSubmit === true || body?.publicSubmit === "true";
+
+      // Honeypot pro jednoduchou ochranu proti spamu. Skutečný návštěvník toto pole nevyplní.
+      if(publicSubmit && sanitizeText(body.website, 200)){
+        return json(res, 200, { ok: true, message: "Děkujeme za referenci." });
+      }
+
+      const authorized = isAuthorized(req, password);
+      if(!authorized && !publicSubmit){
         return json(res, 401, { ok: false, message: "Neplatné heslo." });
       }
 
-      const body = getBody(req);
       const item = normalizeReference(body);
-      const errors = validateReference(item);
+      const errors = publicSubmit ? validatePublicReference(item) : validateReference(item);
 
       if(errors.length){
         return json(res, 400, { ok: false, message: errors.join(" ") });
@@ -185,11 +201,18 @@ export default async function handler(req, res){
         method: "POST",
         body: JSON.stringify({
           ...item,
+          // Reference odeslané klientem se nejdřív uloží jako skryté.
+          // Kamila je pak zkontroluje a zveřejní v administraci.
+          visible: authorized ? item.visible : false,
           created_at: new Date().toISOString()
         })
       });
 
-      return json(res, 200, { ok: true, item: Array.isArray(data) ? data[0] : data });
+      return json(res, 200, {
+        ok: true,
+        message: authorized ? "Reference byla uložena." : "Děkujeme za referenci. Po kontrole ji můžeme zveřejnit na webu.",
+        item: Array.isArray(data) ? data[0] : data
+      });
     }
 
     if(req.method === "PUT"){
