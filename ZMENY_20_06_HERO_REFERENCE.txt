@@ -1,0 +1,1 @@
+Přidán desktop/tablet hero slider na úvodní stránku. Na mobilu zůstává statické hero. Přidán veřejný formulář pro klientské reference na stránku Reference. Reference z veřejného formuláře se ukládají do Supabase jako skryté a Kamila je může schválit v administraci.

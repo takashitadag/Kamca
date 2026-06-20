@@ -328,6 +328,93 @@ color:var(--muted);
 margin-bottom:60px;
 }
 
+
+.public-reference{
+background:#fff;
+border:1px solid rgba(205,169,100,.28);
+box-shadow:0 22px 60px rgba(18,27,63,.06);
+max-width:980px;
+margin:80px auto 0;
+padding:46px;
+}
+
+.public-reference h3{
+font-family:var(--serif);
+font-size:clamp(30px,4vw,46px);
+line-height:1.15;
+color:var(--navy);
+margin-bottom:14px;
+}
+
+.public-reference p{
+color:var(--muted);
+font-size:16px;
+line-height:1.8;
+margin-bottom:28px;
+}
+
+.public-reference-form{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:18px;
+}
+
+.public-reference-form label{
+display:block;
+font-size:11px;
+letter-spacing:2px;
+text-transform:uppercase;
+font-weight:800;
+color:var(--navy);
+}
+
+.public-reference-form input,
+.public-reference-form textarea{
+width:100%;
+margin-top:10px;
+border:1px solid rgba(205,169,100,.35);
+background:#fff;
+font:inherit;
+font-size:15px;
+color:var(--navy);
+padding:15px 16px;
+outline:none;
+}
+
+.public-reference-form textarea{
+min-height:150px;
+resize:vertical;
+}
+
+.public-reference-form .full{grid-column:1/-1;}
+.public-reference-form .hp-field{display:none!important;}
+
+.public-reference-note{
+font-size:13px!important;
+line-height:1.7!important;
+margin:4px 0 0!important;
+}
+
+.public-reference-message{
+grid-column:1/-1;
+display:none;
+padding:14px 16px;
+border:1px solid rgba(205,169,100,.35);
+color:var(--navy);
+background:var(--soft);
+}
+
+.public-reference-message.error{
+background:#fff3f1;
+border-color:#e49b92;
+color:#b7251e;
+}
+
+@media (max-width:760px){
+  .public-reference{padding:28px 22px;margin-top:54px;}
+  .public-reference-form{grid-template-columns:1fr;}
+}
+
 .references{
 display:grid;
 grid-template-columns:repeat(3,1fr);
@@ -956,6 +1043,40 @@ Reference se načítají.
 
 </div>
 
+<div class="public-reference reveal delay-2" id="pridat-referenci">
+<h3>Přidat vlastní referenci</h3>
+<p>Byli jste spokojení se spoluprací? Napište krátkou referenci. Po kontrole ji paní Kopřivová může zveřejnit na webu.</p>
+
+<form class="public-reference-form" id="publicReferenceForm">
+<label>Jméno nebo iniciály
+<input type="text" name="name" placeholder="např. Daniela K." required minlength="2">
+</label>
+
+<label>Lokalita
+<input type="text" name="location" placeholder="např. Olomouc" required minlength="2">
+</label>
+
+<label class="full">Typ spolupráce
+<input type="text" name="category" placeholder="např. Pronájem bytu" required minlength="4">
+</label>
+
+<label class="full">Text reference
+<textarea name="review" placeholder="Napište svou zkušenost se spoluprací." required minlength="12"></textarea>
+</label>
+
+<label class="hp-field">Web
+<input type="text" name="website" tabindex="-1" autocomplete="off">
+</label>
+
+<p class="public-reference-note full">Odesláním reference berete na vědomí, že text bude nejprve zkontrolován a případně zveřejněn ve zkrácené podobě na webu.</p>
+<div class="public-reference-message" id="publicReferenceMessage"></div>
+
+<div class="full">
+<button type="submit" class="clean-btn">Odeslat referenci</button>
+</div>
+</form>
+</div>
+
 </section>
 
 <section class="value">
@@ -1212,7 +1333,55 @@ function getInitials(name){
   return parts.slice(0,2).map(part => part[0]).join("").toUpperCase();
 }
 
+async function setupPublicReferenceForm(){
+  const form = document.getElementById("publicReferenceForm");
+  const message = document.getElementById("publicReferenceMessage");
+  if(!form || !message) return;
+
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    message.style.display = "block";
+    message.className = "public-reference-message";
+    message.textContent = "Reference se odesílá.";
+
+    const formData = new FormData(form);
+    const payload = {
+      publicSubmit: true,
+      name: formData.get("name"),
+      location: formData.get("location"),
+      category: formData.get("category"),
+      review: formData.get("review"),
+      website: formData.get("website")
+    };
+
+    try{
+      const response = await fetch("/api/references", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+
+      if(!response.ok || !data.ok){
+        throw new Error(data.message || "Referenci se nepodařilo odeslat.");
+      }
+
+      message.textContent = data.message || "Děkujeme za referenci. Po kontrole ji můžeme zveřejnit na webu.";
+      form.reset();
+    }catch(error){
+      message.className = "public-reference-message error";
+      message.textContent = error.message || "Referenci se nepodařilo odeslat.";
+    }
+  });
+}
+
 loadPublicReferences();
+setupPublicReferenceForm();
 </script>
 
 </body>
