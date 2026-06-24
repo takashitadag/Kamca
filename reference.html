@@ -419,6 +419,7 @@ color:#b7251e;
 display:grid;
 grid-template-columns:repeat(3,1fr);
 gap:34px;
+align-items:stretch;
 }
 
 .reference{
@@ -428,6 +429,9 @@ padding:40px;
 transition:.35s ease;
 position:relative;
 overflow:hidden;
+display:flex;
+flex-direction:column;
+min-height:520px;
 }
 
 .reference:hover{
@@ -480,10 +484,42 @@ color:var(--muted);
 margin-bottom:26px;
 }
 
+.reference-text{
+position:relative;
+}
+
+.reference-text.is-collapsed{
+display:-webkit-box;
+-webkit-line-clamp:7;
+-webkit-box-orient:vertical;
+overflow:hidden;
+}
+
+.reference-more{
+align-self:flex-start;
+margin:-8px 0 26px;
+border:0;
+background:transparent;
+color:var(--navy);
+font-family:inherit;
+font-size:11px;
+font-weight:700;
+letter-spacing:2px;
+text-transform:uppercase;
+cursor:pointer;
+padding:0 0 7px;
+border-bottom:1px solid var(--gold);
+}
+
+.reference-more:hover{
+color:var(--gold);
+}
+
 .client{
 display:flex;
 align-items:center;
 gap:16px;
+margin-top:auto;
 }
 
 .avatar{
@@ -745,6 +781,10 @@ display:none;
 grid-template-columns:1fr 1fr;
 }
 
+.reference{
+min-height:500px;
+}
+
 .value-grid{
 grid-template-columns:1fr 1fr;
 }
@@ -814,6 +854,10 @@ padding:6px 8px;
 .reference,
 .value-card{
 padding:30px 24px;
+}
+
+.reference{
+min-height:auto;
 }
 
 .stat{
@@ -1264,6 +1308,15 @@ function startCounters(){
 window.addEventListener("scroll", startCounters);
 window.addEventListener("load", startCounters);
 
+
+function toggleReferenceText(textId, button){
+  const text = document.getElementById(textId);
+  if(!text || !button) return;
+
+  const collapsed = text.classList.toggle("is-collapsed");
+  button.textContent = collapsed ? "Zobrazit více" : "Zobrazit méně";
+}
+
 async function loadPublicReferences(){
   const list = document.getElementById("referencesList");
   if(!list) return;
@@ -1285,12 +1338,16 @@ async function loadPublicReferences(){
       const initials = getInitials(name);
       const delay = Math.min(index + 1, 4);
 
+      const isLong = (item.review || "").length > 260;
+      const textId = `reference-text-${index}`;
+
       return `
         <div class="reference reveal delay-${delay}">
           <div class="stars">★★★★★</div>
           <div class="reference-badge">Doporučuji</div>
           <div class="reference-context">${category}</div>
-          <p>„${review}“</p>
+          <p id="${textId}" class="reference-text${isLong ? " is-collapsed" : ""}">„${review}“</p>
+          ${isLong ? `<button class="reference-more" type="button" onclick="toggleReferenceText('${textId}', this)">Zobrazit více</button>` : ""}
           <div class="client">
             <div class="avatar">${initials}</div>
             <div>
